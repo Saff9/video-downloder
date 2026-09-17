@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.4';
+  const APP_VERSION = '1.0.5';
 
   // Storage Keys
   const STORAGE = {
@@ -652,6 +652,8 @@
       return;
     }
 
+    const base = getServerUrl();
+
     if (!isLoadMore) {
       currentCategory = category;
       feedPage = 1;
@@ -703,7 +705,6 @@
       if (els.feedLoadMoreBtn) els.feedLoadMoreBtn.disabled = true;
     }
 
-    const base = getServerUrl();
     let newItems = [];
 
     try {
@@ -938,6 +939,8 @@
       return;
     }
 
+    const base = getServerUrl();
+
     if (!isLoadMore) {
       shortsPage = 1;
       shortsVideos = [];
@@ -968,7 +971,6 @@
       isLoadingMoreShorts = true;
     }
 
-    const base = getServerUrl();
     let newItems = [];
     const randomSeed = forceFresh ? Date.now() : Math.floor(Date.now() / 200000);
 
@@ -1169,113 +1171,6 @@
 
     const cards = els.shortsReelContainer.querySelectorAll('.reel-card');
     cards.forEach((c) => reelObserver.observe(c));
-  }
-
-  // ================= DIRECT FALLBACKS =================
-  async function fetchDirectCurated(category, page = 1) {
-    const topicMap = {
-      science_all: 'Veritasium 3Blue1Brown Kurzgesagt science 4k',
-      physics_space: 'PBS Space Time Astrum quantum astrophysics',
-      math_tech: '3Blue1Brown Numberphile computer science math',
-      engineering: 'Real Engineering ColdFusion technology inventions',
-      biology_health: 'Huberman Lab Real Science microbiology neuroscience',
-      documentaries: 'BBC Earth National Geographic nature science 4k',
-    };
-    const query = topicMap[category] || 'Veritasium science documentary 4k';
-
-    for (const mirror of MIRRORS) {
-      try {
-        const res = await fetch(`${mirror}/api/v1/search?q=${encodeURIComponent(query)}&page=${page}&type=video`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            return data
-              .filter((v) => v.videoId && (!v.lengthSeconds || v.lengthSeconds > 60))
-              .slice(0, 24)
-              .map((i) => ({
-                id: i.videoId,
-                title: i.title,
-                uploader: i.author || 'Science Channel',
-                duration: i.lengthSeconds || 0,
-                views: i.viewCount || 0,
-                thumbnail: getCleanThumbnail(i.videoId),
-                avatar: (i.authorThumbnails && i.authorThumbnails[0]?.url) || '',
-                url: `https://www.youtube.com/watch?v=${i.videoId}`,
-              }));
-          }
-        }
-      } catch (_) {}
-    }
-    return [];
-  }
-
-  async function fetchDirectShorts(page = 1) {
-    for (const mirror of MIRRORS) {
-      try {
-        const res = await fetch(`${mirror}/api/v1/search?q=%23shorts%20science%20physics&page=${page}&type=video`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            return data
-              .filter((v) => v.videoId && (!v.lengthSeconds || v.lengthSeconds <= 90))
-              .slice(0, 24)
-              .map((i) => ({
-                id: i.videoId,
-                title: (i.title || '').replace(/#shorts/gi, '').trim() || 'Science Short',
-                uploader: i.author || 'Creator',
-                duration: i.lengthSeconds || 30,
-                views: i.viewCount || 0,
-                thumbnail: getCleanThumbnail(i.videoId),
-                avatar: (i.authorThumbnails && i.authorThumbnails[0]?.url) || '',
-                url: `https://www.youtube.com/shorts/${i.videoId}`,
-              }));
-          }
-        }
-      } catch (_) {}
-    }
-    return [];
-  }
-
-  async function searchDirect(query) {
-    for (const mirror of MIRRORS) {
-      try {
-        const res = await fetch(`${mirror}/api/v1/search?q=${encodeURIComponent(query)}&type=all`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            let ch = null;
-            const vids = [];
-            for (const item of data) {
-              if (item.type === 'channel' && !ch) {
-                const name = item.author || 'Channel';
-                ch = {
-                  name: name,
-                  handle: `@${name.replace(/\s+/g, '').toLowerCase()}`,
-                  avatar: (item.authorThumbnails && item.authorThumbnails[item.authorThumbnails.length - 1]?.url) || (item.authorThumbnails && item.authorThumbnails[0]?.url) || getChannelAvatar(name),
-                  subCount: item.subCount ? `${item.subCount} subscribers` : 'Official Channel',
-                  videoCount: `${item.videoCount || 20} videos`,
-                  description: item.description || 'Curated Channel',
-                  verified: true,
-                };
-              } else if (item.videoId) {
-                vids.push({
-                  id: item.videoId,
-                  title: item.title,
-                  uploader: item.author || 'Creator',
-                  duration: item.lengthSeconds || 0,
-                  views: item.viewCount || 0,
-                  thumbnail: getCleanThumbnail(item.videoId),
-                  avatar: (item.authorThumbnails && item.authorThumbnails[0]?.url) || '',
-                  url: `https://www.youtube.com/watch?v=${item.videoId}`,
-                });
-              }
-            }
-            return { channel: ch, items: vids.slice(0, 24) };
-          }
-        }
-      } catch (_) {}
-    }
-    return { channel: null, items: [] };
   }
 
   // ================= AD-SHIELD MODAL PLAYER & RELATED VIDEOS =================
@@ -1689,11 +1584,17 @@
       resolvedUrl = `https://10downloader.com/download?v=${encodeURIComponent(currentMeta.webpageUrl)}`;
     }
 
+    const dlTitle = (currentMeta && currentMeta.title) ? currentMeta.title : 'video';
+    const mimeType = isAudio ? 'audio/mpeg' : 'video/mp4';
+
     if (window.AndroidDownloader) {
       if (resolvedUrl.startsWith('http')) {
         if (resolvedUrl.includes('10downloader.com') && window.AndroidDownloader.openUrl) {
           window.AndroidDownloader.openUrl(resolvedUrl);
           showToast('Opening universal download portal...');
+        } else if (window.AndroidDownloader.downloadFileWithTitle) {
+          window.AndroidDownloader.downloadFileWithTitle(resolvedUrl, dlTitle, mimeType);
+          showToast(`Downloading "${dlTitle}" to Downloads 📥`);
         } else {
           window.AndroidDownloader.downloadFile(resolvedUrl);
           showToast('Downloading to your phone via Android Download Manager 📥');
