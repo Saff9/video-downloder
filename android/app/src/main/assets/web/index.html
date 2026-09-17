@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f0f0f" />
+  <meta name="description" content="VideoFetch Pro — Curated Science & Education Feed, Universal 4K Video Downloader & Ad-Shield Player." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>VideoFetch Pro — Science Feed &amp; Universal Downloader</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icons/logo.svg" />
+  <link rel="apple-touch-icon" href="icons/logo.svg" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Top App Navigation Bar -->
+  <header class="app-header">
+    <div class="header-inner">
+      <!-- Custom Brand Logo -->
+      <a href="#" class="brand-link" data-tab="feed" aria-label="VideoFetch Home">
+        <div class="brand-logo">
+          <img src="icons/logo.svg" width="28" height="28" alt="VideoFetch Logo" />
+        </div>
+        <span class="brand-title">Video<span class="brand-accent">Fetch</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <button type="button" class="nav-item active" data-tab="feed">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="14" y2="10"/></svg>
+          <span>Science &amp; Education</span>
+        </button>
+        <button type="button" class="nav-item js-shorts-nav" data-tab="shorts">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.24-2.53-5.07-1.56L6 6.94c-1.29.68-2.07 2.04-2 3.49.07 1.42.93 2.67 2.22 3.25.03.01 1.2.5 1.2.5L6 14.93c-1.83.97-2.53 3.24-1.56 5.07.97 1.83 3.24 2.53 5.07 1.56l8.5-4.5c1.29-.68 2.06-2.04 1.99-3.49-.07-1.42-.94-2.68-2.23-3.25zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+          <span>Shorts Feed</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="downloader">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Downloader</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="history">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>History</span>
+          <span id="nav-history-count" class="pill-count">0</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="header-right">
+        <!-- Sponsor / Tip Button -->
+        <button id="header-sponsor-btn" class="header-sponsor-pill js-open-sponsor" type="button" title="Sponsor &amp; Donate (Razorpay &amp; SOL)" aria-label="Sponsor Project">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Sponsor</span>
+        </button>
+        <!-- Refresh Feed -->
+        <button id="header-refresh-btn" class="icon-btn" type="button" title="Get Fresh Recommendations" aria-label="Refresh Feed">
+          <svg class="spin-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+        <!-- Theme Toggle -->
+        <button id="theme-btn" class="icon-btn" type="button" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Views Container -->
+  <main class="app-main">
+
+    <!-- ================= VIEW 1: SCIENCE & EDUCATION FEED ================= -->
+    <section id="view-feed" class="app-view active">
+      <!-- Search & Refresh Top Bar -->
+      <div class="feed-top-bar">
+        <div class="search-box">
+          <form id="youtube-search-form">
+            <div class="search-input-wrap">
+              <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="youtube-search-input" type="search" placeholder="Search creators, channels, physics, math, AI..." autocomplete="off" />
+              <button type="button" id="clear-search-btn" class="clear-btn hidden">&times;</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="feed-actions-row">
+          <button type="button" class="btn-sponsor-mini js-open-sponsor" title="Support Development">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Sponsor</span>
+          </button>
+          <button type="button" id="feed-refresh-trigger" class="btn-refresh">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Fresh Content</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Curated Science Category Strip -->
+      <div class="category-strip" id="video-categories">
+        <button type="button" class="chip active" data-cat="science_all">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <span>All Science &amp; Useful</span>
+        </button>
+        <button type="button" class="chip" data-cat="physics_space">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <span>Physics &amp; Space</span>
+        </button>
+        <button type="button" class="chip" data-cat="math_tech">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+          <span>Math &amp; AI Tech</span>
+        </button>
+        <button type="button" class="chip" data-cat="engineering">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Engineering &amp; Inventions</span>
+        </button>
+        <button type="button" class="chip" data-cat="biology_health">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l.77.77L12 20.66l7.65-7.66.77-.77a5.4 5.4 0 0 0 0-7.65z"/></svg>
+          <span>Biology &amp; Brain</span>
+        </button>
+        <button type="button" class="chip" data-cat="documentaries">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <span>Documentaries</span>
+        </button>
+      </div>
+
+      <!-- Quick Trending Science Tags -->
+      <div class="trending-tags-bar" id="trending-tags">
+        <span class="trending-label">🔥 Trending:</span>
+        <button type="button" class="tag-chip js-tag-search" data-tag="Quantum Computing">Quantum Computing</button>
+        <button type="button" class="tag-chip js-tag-search" data-tag="James Webb Telescope">James Webb</button>
+        <button type="button" class="tag-chip js-tag-search" data-tag="Neuroscience Huberman">Neuroscience</button>
+        <button type="button" class="tag-chip js-tag-search" data-tag="Microchips Semiconductor">Microchips</button>
+        <button type="button" class="tag-chip js-tag-search" data-tag="Calculus 3Blue1Brown">Calculus</button>
+        <button type="button" class="tag-chip js-tag-search" data-tag="Fusion Energy">Nuclear Fusion</button>
+      </div>
+
+      <!-- Dedicated Channel Showcase Card -->
+      <div id="channel-card-container" class="channel-card-wrap hidden"></div>
+
+      <!-- Video Feed Grid Skeleton -->
+      <div id="feed-skel" class="video-grid skel-grid">
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+        <div class="video-skel-card"><div class="skel-thumb"></div><div class="skel-text w90"></div><div class="skel-text w60"></div></div>
+      </div>
+
+      <!-- Live Video Feed Grid -->
+      <div id="video-feed-grid" class="video-grid hidden"></div>
+      
+      <!-- Load More Videos Pagination (Up to 100) -->
+      <div id="feed-load-more-wrap" class="load-more-wrap hidden">
+        <button type="button" id="feed-load-more-btn" class="btn-secondary btn-load-more">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>Load More Videos (<span id="feed-count-badge">24</span> / 100)</span>
+          <span class="spinner-small hidden" id="feed-load-spinner"></span>
+        </button>
+      </div>
+
+      <div id="video-feed-empty" class="state-empty hidden">
+        <p>No educational videos found. Tap "Fresh Content" to reload.</p>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 2: SHORTS / REELS SNAP-SCROLL FEED (UP TO 300) ================= -->
+    <section id="view-shorts" class="app-view">
+      <div class="shorts-reel-header">
+        <div class="shorts-title-group">
+          <div class="shorts-badge">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#ff0000"><path d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.24-2.53-5.07-1.56L6 6.94c-1.29.68-2.07 2.04-2 3.49.07 1.42.93 2.67 2.22 3.25.03.01 1.2.5 1.2.5L6 14.93c-1.83.97-2.53 3.24-1.56 5.07.97 1.83 3.24 2.53 5.07 1.56l8.5-4.5c1.29-.68 2.06-2.04 1.99-3.49-.07-1.42-.94-2.68-2.23-3.25zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+            <span>Science Shorts Feed</span>
+          </div>
+          <span class="shorts-counter-pill"><span id="shorts-loaded-count">24</span> / 300 Shorts</span>
+          <button type="button" id="shorts-refresh-btn" class="btn-refresh">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>Fresh Shorts</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Outer Reel Wrapper with Desktop Controls -->
+      <div class="shorts-reel-outer-wrap">
+        <!-- Shorts Skeleton -->
+        <div id="shorts-skel" class="shorts-reel-viewport skel-grid">
+          <div class="reel-skel-card"><div class="skel-reel-thumb"></div></div>
+        </div>
+
+        <!-- Full Vertical Snap-Scroll Reel Container -->
+        <div id="shorts-reel-container" class="shorts-reel-viewport hidden"></div>
+
+        <!-- Desktop Quick Nav Controls -->
+        <div class="reel-desktop-nav">
+          <button type="button" id="reel-nav-prev" class="reel-nav-arrow" title="Previous Short (Up Arrow)">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <button type="button" id="reel-nav-next" class="reel-nav-arrow" title="Next Short (Down Arrow)">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="shorts-empty" class="state-empty hidden">
+        <p>Shorts are currently blocked in Settings or unavailable.</p>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 3: DOWNLOADER ================= -->
+    <section id="view-downloader" class="app-view">
+      <div class="downloader-hero">
+        <h1 class="page-title">Universal Media Downloader</h1>
+        <p class="page-sub">Ad-Free direct video &amp; audio extractor for YouTube, Shorts, TikTok, Instagram &amp; more.</p>
+      </div>
+
+      <div class="panel-card input-card">
+        <div class="main-input-wrap">
+          <div class="url-bar">
+            <svg class="link-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <input id="media-url-input" type="url" placeholder="Paste video link (YouTube, Shorts, TikTok, Instagram...)" autocomplete="off" spellcheck="false" />
+            <button type="button" id="paste-btn" class="btn-secondary btn-paste">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              <span>Paste</span>
+            </button>
+          </div>
+          <button type="button" id="analyze-btn" class="btn-primary btn-analyze">
+            <span class="btn-text">Analyze Link</span>
+            <span class="btn-loader hidden"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Card -->
+      <div id="media-preview-card" class="panel-card media-card hidden">
+        <div class="media-layout">
+          <div class="thumb-container">
+            <img id="preview-thumb" src="" alt="Thumbnail" onload="if(this.naturalWidth && this.naturalWidth <= 120){this.src='icons/logo.svg';this.classList.add('fallback-logo-thumb');}" onerror="this.onerror=null;this.src='icons/logo.svg';this.classList.add('fallback-logo-thumb');" />
+            <span id="preview-duration" class="badge-duration">0:00</span>
+          </div>
+          <div class="media-info">
+            <div class="platform-badge-row">
+              <span id="preview-platform-badge" class="badge-platform">Platform</span>
+              <span id="preview-views" class="badge-views">0 views</span>
+            </div>
+            <h3 id="preview-title" class="media-title">Video Title</h3>
+            <p id="preview-uploader" class="media-author">Author Name</p>
+
+            <!-- Format Selector -->
+            <div class="format-section">
+              <div class="format-tabs">
+                <button type="button" class="fmt-tab active" data-fmt="video">Video (MP4)</button>
+                <button type="button" class="fmt-tab" data-fmt="audio">Audio Only (MP3)</button>
+              </div>
+
+              <div id="video-qualities" class="qualities-chips">
+                <button type="button" class="q-chip active" data-quality="best">Highest (1080p/4K)</button>
+                <button type="button" class="q-chip" data-quality="1080">1080p</button>
+                <button type="button" class="q-chip" data-quality="720">720p HD</button>
+                <button type="button" class="q-chip" data-quality="480">480p</button>
+                <button type="button" class="q-chip" data-quality="360">360p</button>
+              </div>
+
+              <div id="audio-qualities" class="qualities-chips hidden">
+                <button type="button" class="q-chip active" data-quality="best">Original (320kbps)</button>
+                <button type="button" class="q-chip" data-quality="192">192kbps</button>
+                <button type="button" class="q-chip" data-quality="128">128kbps</button>
+              </div>
+
+              <button type="button" id="execute-download-btn" class="btn-primary btn-execute">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download Video (Highest)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 4: SEPARATE WATCH, DOWNLOAD & BOOKMARK HISTORY ================= -->
+    <section id="view-history" class="app-view">
+      <div class="history-top-bar">
+        <div>
+          <h2 class="view-title">Activity &amp; Bookmarks</h2>
+          <p class="view-sub">Separate logs for watched videos, saved bookmarks, and downloaded media.</p>
+        </div>
+        <div class="history-actions-wrap">
+          <input id="history-filter-input" type="search" placeholder="Search history..." />
+          <button type="button" id="clear-all-history" class="btn-danger-outline">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Clear Current Log</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-Navigation: Watch vs Bookmarks vs Downloads -->
+      <div class="history-subtabs">
+        <button type="button" class="hist-tab-btn active" data-hist-tab="watched">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Watch History (100)</span>
+          <span id="hist-watch-count" class="pill-count-sub">0</span>
+        </button>
+        <button type="button" class="hist-tab-btn" data-hist-tab="bookmarks">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Saved Bookmarks</span>
+          <span id="hist-bookmark-count" class="pill-count-sub">0</span>
+        </button>
+        <button type="button" class="hist-tab-btn" data-hist-tab="downloaded">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Downloads</span>
+          <span id="hist-download-count" class="pill-count-sub">0</span>
+        </button>
+      </div>
+
+      <div id="history-list" class="history-card-list"></div>
+      <div id="history-empty-state" class="state-empty hidden">
+        <p>No activity yet.</p>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: SETTINGS & PREFERENCES ================= -->
+    <section id="view-settings" class="app-view">
+      <div class="settings-wrap">
+        <h2 class="view-title">Settings &amp; Options</h2>
+        <p class="view-sub">Configure focus mode, support development, and review policies.</p>
+
+        <!-- SPONSOR & DONATION SECTION (BIG CARDS) -->
+        <div class="panel-card setting-panel sponsor-main-panel">
+          <div class="setting-head">
+            <div class="sponsor-head-title">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <h3>Support &amp; Sponsor Development</h3>
+            </div>
+            <span class="status-pill sponsor-pill">Official Support</span>
+          </div>
+          <p class="setting-hint">VideoFetch Pro is 100% free and open-source. Support our server infrastructure, zero-ad proxy maintenance, and ongoing updates!</p>
+          
+          <div class="sponsor-cards-grid">
+            <!-- Big Razorpay Card -->
+            <div class="big-sponsor-card razorpay-card">
+              <div class="bsc-top">
+                <div class="bsc-badge razorpay-badge">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2L2 19.7778H7.55556L12 12L16.4444 19.7778H22L12 2Z"/><path d="M7 22H17L14 17H10L7 22Z"/></svg>
+                  <span>Razorpay Payment</span>
+                </div>
+                <span class="bsc-handle">@Saff9</span>
+              </div>
+              <p class="bsc-desc">Instant secure donation via UPI, Cards, NetBanking, or Wallets.</p>
+              <div class="bsc-action-group">
+                <a href="https://razorpay.me/@Saff9" target="_blank" rel="noopener noreferrer" class="btn-sponsor-big razorpay-btn">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>Donate with Razorpay</span>
+                </a>
+                <a href="https://razorpay.me/@Saff9" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">Custom Amount</a>
+              </div>
+            </div>
+
+            <!-- Big Solana Crypto Card -->
+            <div class="big-sponsor-card solana-card">
+              <div class="bsc-top">
+                <div class="bsc-badge solana-badge">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4 18l3.5-3.5h12.5l-3.5 3.5H4zm0-6l3.5-3.5h12.5L16.5 12H4zm3.5-6L4 9.5h12.5L20 6H7.5z"/></svg>
+                  <span>Solana (SOL) Crypto Tip</span>
+                </div>
+                <span class="bsc-network">SOL Network</span>
+              </div>
+              <div class="sol-address-box">
+                <span class="sol-address-text">DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7</span>
+              </div>
+              <button type="button" class="btn-sponsor-big solana-btn js-copy-sol" data-address="DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Copy Solana (SOL) Address</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Focus Mode & Shorts Control -->
+        <div class="panel-card setting-panel">
+          <div class="setting-head">
+            <h3>Focus &amp; Content Blocking</h3>
+            <span class="status-pill focus">Focus Control</span>
+          </div>
+          <div class="setting-row">
+            <div>
+              <strong>Block Shorts (Distraction-Free Mode)</strong>
+              <div class="setting-hint">Hides the Shorts tab and filters out short-form videos completely</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-block-shorts" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- VPS Config Card -->
+        <div class="panel-card setting-panel">
+          <div class="setting-head">
+            <h3>Custom VPS Backend (Optional)</h3>
+            <span id="vps-status-pill" class="status-pill direct">Direct Mode (No VPS)</span>
+          </div>
+          <p class="setting-hint">VideoFetch Pro works standalone out-of-the-box. If you want to use your own self-hosted VPS backend, enter the URL below.</p>
+          <div class="vps-input-group">
+            <input id="vps-url-input" type="url" placeholder="http://192.168.1.50:3000 or https://vps.example.com" />
+            <button type="button" id="vps-test-btn" class="btn-secondary">Test Ping</button>
+            <button type="button" id="vps-save-btn" class="btn-primary">Save</button>
+          </div>
+          <div id="vps-feedback" class="vps-feedback hidden"></div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="panel-card setting-panel">
+          <h3>Preferences</h3>
+          <div class="setting-row">
+            <div>
+              <strong>Default Video Quality</strong>
+              <div class="setting-hint">Preferred resolution when analyzing media</div>
+            </div>
+            <select id="pref-quality-select" class="clean-select">
+              <option value="best">Best Available (4K / 1080p)</option>
+              <option value="1080">1080p Full HD</option>
+              <option value="720">720p HD</option>
+              <option value="480">480p SD</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Theme Mode</strong>
+              <div class="setting-hint">Visual appearance</div>
+            </div>
+            <select id="pref-theme-select" class="clean-select">
+              <option value="dark">YouTube Dark (Deep Black)</option>
+              <option value="midnight">OLED Midnight</option>
+              <option value="light">Crisp Light</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Feed Topic &amp; Curation Mode</strong>
+              <div class="setting-hint">Choose your default video feed genre &amp; algorithm topic</div>
+            </div>
+            <select id="pref-feed-topic-select" class="clean-select">
+              <option value="science_all" selected>Curated Science &amp; Education (Default)</option>
+              <option value="tech_programming">Technology, Coding &amp; AI</option>
+              <option value="physics_space">Physics, Space &amp; Mathematics</option>
+              <option value="nature_earth">Nature, Earth &amp; Biology</option>
+              <option value="engineering">Engineering &amp; Applied Sciences</option>
+              <option value="general_all">General / YouTube Trending</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Auto-Paste Clipboard</strong>
+              <div class="setting-hint">Detect copied video link when opening app</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-autopaste-check" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- DEVELOPER & GITHUB INTEGRATION CARD -->
+        <div class="panel-card setting-panel developer-panel">
+          <div class="setting-head">
+            <h3>Developer &amp; GitHub Hub</h3>
+            <span class="status-pill direct">Lead Developer</span>
+          </div>
+          <div class="developer-card-content">
+            <div class="dev-avatar-wrap">
+              <img src="https://github.com/Saff9.png" alt="Saffan" class="dev-avatar" onerror="this.onerror=null;this.src='icons/logo.svg';" />
+            </div>
+            <div class="dev-info-col">
+              <div class="dev-name-row">
+                <h4 class="dev-name">Saffan Akbar</h4>
+                <a href="https://github.com/Saff9" target="_blank" rel="noopener noreferrer" class="dev-handle-pill">@Saff9</a>
+              </div>
+              <p class="dev-bio">Creator of VideoFetch Pro &bull; Open-source developer crafting high-performance, ad-free multimedia streaming and download utilities.</p>
+              <div class="dev-action-row">
+                <a href="https://github.com/Saff9" target="_blank" rel="noopener noreferrer" class="btn-github-pill">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                  <span>GitHub Profile</span>
+                </a>
+                <a href="https://github.com/login" target="_blank" rel="noopener noreferrer" class="btn-github-login-pill">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                  <span>Sign In with GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFESSIONAL LEGAL & COMPLIANCE SECTION -->
+        <div class="panel-card setting-panel legal-panel">
+          <div class="setting-head">
+            <h3>Legal, Terms &amp; Fair Use</h3>
+            <span class="status-pill compliance">Compliance</span>
+          </div>
+          
+          <div class="legal-accordion">
+            <!-- Terms of Service -->
+            <details class="legal-item">
+              <summary class="legal-summary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Terms of Service</span>
+              </summary>
+              <div class="legal-content">
+                <p><strong>1. Non-Commercial Personal Use:</strong> VideoFetch Pro is an open-source educational utility designed solely for personal research, educational viewing, and non-commercial media archiving.</p>
+                <p><strong>2. User Compliance:</strong> Users agree to comply with all applicable local copyright laws and third-party terms of service. You may only download or stream content for which you have explicit rights or which is provided under public creative commons licenses.</p>
+                <p><strong>3. No Warranties:</strong> The software is provided "as is", without warranty of any kind, express or implied, including fitness for a particular purpose.</p>
+              </div>
+            </details>
+
+            <!-- Privacy Policy -->
+            <details class="legal-item">
+              <summary class="legal-summary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Privacy Policy (100% Zero-Telemetry)</span>
+              </summary>
+              <div class="legal-content">
+                <p><strong>1. Zero Data Collection:</strong> VideoFetch Pro collects NO personally identifiable information, search logs, telemetry, or analytics.</p>
+                <p><strong>2. Local Storage Only:</strong> Your watch history, download records, and preferences are stored 100% on your local device (in your browser/app storage) and are never transmitted to our servers.</p>
+                <p><strong>3. Decentralized Proxies:</strong> Video queries are routed through privacy-respecting decentralized proxies (Invidious / Piped) with no tracking identifiers attached.</p>
+              </div>
+            </details>
+
+            <!-- Fair Use & Disclaimer -->
+            <details class="legal-item">
+              <summary class="legal-summary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>Fair Use Notice &amp; Content Attribution</span>
+              </summary>
+              <div class="legal-content">
+                <p><strong>Educational Fair Use:</strong> Content curation is performed pursuant to <strong>17 U.S.C. § 107 (Fair Use)</strong> for educational, commentary, and scientific research purposes.</p>
+                <p><strong>Open-Source Attributions:</strong> Built with yt-dlp, Invidious Project, and the open-source X recommendation ranking principles.</p>
+                <p><strong>Attribution &amp; Inquiries:</strong> Developed with passion by <strong>Saffan (@Saff9)</strong>.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- APP VERSION & UPDATE CHECKER CARD -->
+        <div class="panel-card setting-panel version-panel">
+          <div class="setting-head">
+            <h3>App Version &amp; Updates</h3>
+            <span id="app-version-badge" class="status-pill compliance">v1.0.1 (Latest)</span>
+          </div>
+          <p class="setting-hint">VideoFetch Pro Version 1.0.1 &bull; Neural Science Ranking &bull; Snap-Scroll Reels &bull; Pure Stream Ad-Shield &bull; Multi-Platform Downloader.</p>
+          <div class="update-checker-row">
+            <button type="button" id="btn-check-updates" class="btn-secondary btn-sm">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Check for Updates</span>
+            </button>
+            <span id="update-status-text" class="update-status-text">Your app is running the latest build (v1.0.1).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SPONSOR / DONATION MODAL ================= -->
+    <div id="sponsor-modal" class="modal-backdrop hidden">
+      <div class="modal-dialog sponsor-dialog">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <h3>Support &amp; Sponsor VideoFetch</h3>
+          </div>
+          <button type="button" id="close-sponsor-modal" class="btn-close-modal">&times;</button>
+        </div>
+        <div class="modal-body sponsor-modal-body">
+          <p class="sponsor-modal-sub">Help keep VideoFetch 100% ad-free, fast, and constantly updated!</p>
+          
+          <!-- Razorpay Block -->
+          <div class="sponsor-modal-card">
+            <div class="smc-header">
+              <span class="smc-title">☕ Razorpay (UPI, Cards, NetBanking)</span>
+              <span class="smc-badge">@Saff9</span>
+            </div>
+            <a href="https://razorpay.me/@Saff9?amount=kXxURMaXFk%2Bmrv%2B9uGrYpg%3D%3D" target="_blank" rel="noopener noreferrer" class="btn-sponsor-big razorpay-btn">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Proceed to Razorpay</span>
+            </a>
+          </div>
+
+          <!-- Solana Block -->
+          <div class="sponsor-modal-card">
+            <div class="smc-header">
+              <span class="smc-title">⚡ Solana (SOL) Crypto Tip</span>
+              <span class="smc-badge">SOL</span>
+            </div>
+            <div class="sol-address-box">
+              <span class="sol-address-text">DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7</span>
+            </div>
+            <button type="button" class="btn-sponsor-big solana-btn js-copy-sol" data-address="DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy Solana Address</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= VIDEO PLAYER MODAL & RELATED VIDEOS ================= -->
+  <div id="video-modal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="badge-adblock">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>VideoFetch Ad-Shield &bull; Pure Stream</span>
+          </span>
+          <h3 id="modal-title" class="modal-title">Video Player</h3>
+        </div>
+        <div class="modal-ctrls">
+          <!-- Minimize to Floating Player -->
+          <button type="button" id="modal-float-btn" class="modal-btn-action" title="Minimize to Floating Mini-Player">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4"/><rect x="12" y="12" width="8" height="8" rx="2" fill="currentColor"/></svg>
+          </button>
+          <!-- Close Modal -->
+          <button type="button" id="modal-close-btn" class="modal-close" title="Close Player">&times;</button>
+        </div>
+      </div>
+
+      <!-- Main Video Frame -->
+      <div class="modal-player-container">
+        <iframe id="modal-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+
+      <!-- Video Action Bar -->
+      <div class="modal-video-meta-bar">
+        <div class="meta-left">
+          <img id="modal-author-avatar" class="modal-author-avatar" src="icons/logo.svg" alt="" onerror="window.handleAvatarError && window.handleAvatarError(this, 'Curated Channel');" />
+          <div class="modal-author-info">
+            <span id="modal-author-badge" class="author-badge">Curated Channel</span>
+            <span id="modal-views-badge" class="views-badge"></span>
+          </div>
+        </div>
+        <div class="meta-right">
+          <button type="button" id="modal-dl-btn" class="btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download</span>
+          </button>
+          <button type="button" id="modal-copy-link-btn" class="btn-secondary btn-sm">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- In-Player Sponsor Action Banner -->
+      <div class="player-sponsor-banner">
+        <div class="psb-left">
+          <div class="psb-icon-wrap">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="psb-text-col">
+            <span class="psb-title">Support VideoFetch &amp; Developer Saffan (@Saff9)</span>
+            <span class="psb-sub">100% Ad-Free, Curated Streams &amp; Fast Downloads</span>
+          </div>
+        </div>
+        <div class="psb-actions">
+          <a href="https://razorpay.me/@Saff9?amount=kXxURMaXFk%2Bmrv%2B9uGrYpg%3D%3D" target="_blank" rel="noopener noreferrer" class="psb-btn razorpay">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Sponsor on Razorpay</span>
+          </a>
+          <button type="button" class="psb-btn solana js-copy-sol" data-address="DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy SOL Address</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Up Next & Related Videos Section Below Player -->
+      <div class="related-videos-section">
+        <div class="related-header">
+          <div class="related-title-wrap">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <h4>Up Next &amp; Related Videos</h4>
+          </div>
+          <span class="related-badge">Curated Science</span>
+        </div>
+
+        <div id="related-skel" class="related-list skel-grid">
+          <div class="related-skel-item"><div class="skel-rthumb"></div><div class="skel-rtext"></div></div>
+          <div class="related-skel-item"><div class="skel-rthumb"></div><div class="skel-rtext"></div></div>
+          <div class="related-skel-item"><div class="skel-rthumb"></div><div class="skel-rtext"></div></div>
+        </div>
+
+        <div id="related-list" class="related-list hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FLOATING MINI PLAYER DOCK (PiP) ================= -->
+  <div id="floating-mini-player" class="floating-player-dock hidden">
+    <div class="floating-header">
+      <div class="floating-drag-handle">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></svg>
+        <span id="floating-title" class="floating-title-text">Playing Video</span>
+      </div>
+      <div class="floating-actions">
+        <!-- Expand to Full Player -->
+        <button type="button" id="floating-expand-btn" class="floating-btn" title="Expand Fullscreen">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <!-- Close Mini-Player -->
+        <button type="button" id="floating-close-btn" class="floating-btn" title="Close">&times;</button>
+      </div>
+    </div>
+    <div class="floating-video-frame">
+      <iframe id="floating-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Floating Navigation -->
+  <nav class="mobile-nav" aria-label="Mobile Navigation">
+    <button type="button" class="mob-item active" data-tab="feed">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Feed</span>
+    </button>
+    <button type="button" class="mob-item js-shorts-nav" data-tab="shorts">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.77 10.32l-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.24-2.53-5.07-1.56L6 6.94c-1.29.68-2.07 2.04-2 3.49.07 1.42.93 2.67 2.22 3.25.03.01 1.2.5 1.2.5L6 14.93c-1.83.97-2.53 3.24-1.56 5.07.97 1.83 3.24 2.53 5.07 1.56l8.5-4.5c1.29-.68 2.06-2.04 1.99-3.49-.07-1.42-.94-2.68-2.23-3.25zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+      <span>Shorts</span>
+    </button>
+    <button type="button" class="mob-item" data-tab="downloader">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Downloader</span>
+    </button>
+    <button type="button" class="mob-item" data-tab="history">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
+    </button>
+    <button type="button" class="mob-item" data-tab="settings">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="app-toast hidden" role="status"></div>
+
+  <!-- App Script -->
+  <script src="js/app.js" defer></script>
+</body>
+</html>

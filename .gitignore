@@ -1,0 +1,22 @@
+node_modules/
+server/bin/
+server/cookies.txt
+server/*.log
+server/server.pid
+.env
+*.apk
+.DS_Store
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+android/.kotlin/
+
+# IDE
+.idea/
+.vscode/
+*.iml

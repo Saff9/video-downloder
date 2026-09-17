@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VideoFetch</string>
+    <string name="server_title">Connect your server</string>
+    <string name="server_subtitle">VideoFetch is powered by your own backend server (the folder named "server" in this project). It runs the downloads, so you can save videos from YouTube, Facebook, TikTok, Instagram and more. Enter its address below.</string>
+    <string name="btn_test">Test</string>
+    <string name="btn_save">Save &amp; open</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="downloading_title">VideoFetch download</string>
+</resources>

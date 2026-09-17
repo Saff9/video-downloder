@@ -1,0 +1,31 @@
+{
+  "name": "videofetch-server",
+  "version": "1.0.1",
+  "description": "VideoFetch backend - extracts and streams videos from YouTube, Facebook, TikTok, Instagram and more using yt-dlp.",
+  "author": "Saffan Akbar (@Saff9) <saffanakbar942@gmail.com>",
+  "repository": "https://github.com/Saff9/video-downloder",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "setup": "node scripts/install-ytdlp.js"
+  },
+  "keywords": [
+    "video-downloader",
+    "yt-dlp",
+    "youtube",
+    "tiktok",
+    "facebook",
+    "instagram",
+    "api"
+  ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
