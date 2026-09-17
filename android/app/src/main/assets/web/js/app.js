@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.6';
+  const APP_VERSION = '1.0.7';
 
   // Storage Keys
   const STORAGE = {
@@ -644,6 +644,21 @@
         if (iframe.src) iframe.src = '';
       }
     });
+
+    if (closestCard) {
+      const url = closestCard.dataset.url;
+      const title = closestCard.dataset.title;
+      const uploader = closestCard.dataset.uploader;
+      const videoId = closestCard.dataset.videoId;
+      if (url) {
+        saveWatchHistory({
+          title,
+          uploader,
+          thumbnail: getCleanThumbnail(videoId),
+          url,
+        });
+      }
+    }
   }
 
   // ================= SCIENCE & EDUCATION FEED (UP TO 100 VIDEOS) =================
@@ -1046,7 +1061,7 @@
       .map((s, idx) => {
         const uploaderSafe = s.uploader || 'Science Creator';
         const avatarUrl = getChannelAvatar(uploaderSafe, s.avatar);
-        const embedUrl = `https://www.youtube.com/embed/${s.id}?autoplay=1&mute=1&controls=1&loop=1&playlist=${s.id}&enablejsapi=1&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3`;
+        const embedUrl = `https://www.youtube.com/embed/${s.id}?autoplay=1&mute=1&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1`;
         const bookmarked = isBookmarked(s.url);
         const thumbHd = getCleanThumbnail(s.id, s.thumbnail);
 
@@ -1841,22 +1856,19 @@
       });
     });
 
-    // Shorts Desktop Reel Navigation (Next / Prev Arrows)
-    const reelPrev = $('#reel-nav-prev');
-    const reelNext = $('#reel-nav-next');
-    if (reelPrev && els.shortsReelContainer) {
-      reelPrev.addEventListener('click', () => {
-        const step = els.shortsReelContainer.clientHeight || window.innerHeight * 0.8;
-        els.shortsReelContainer.scrollBy({ top: -step, behavior: 'smooth' });
-        setTimeout(activateVisibleShort, 350);
-      });
-    }
-    if (reelNext && els.shortsReelContainer) {
-      reelNext.addEventListener('click', () => {
-        const step = els.shortsReelContainer.clientHeight || window.innerHeight * 0.8;
-        els.shortsReelContainer.scrollBy({ top: step, behavior: 'smooth' });
-        setTimeout(activateVisibleShort, 350);
-      });
+    // Shorts Reel Scroll Event (Auto activate center video)
+    if (els.shortsReelContainer) {
+      let reelScrollTimer = null;
+      els.shortsReelContainer.addEventListener(
+        'scroll',
+        () => {
+          if (activeTab === 'shorts') {
+            clearTimeout(reelScrollTimer);
+            reelScrollTimer = setTimeout(activateVisibleShort, 100);
+          }
+        },
+        { passive: true }
+      );
     }
 
     // Keyboard Arrow navigation for Reels
