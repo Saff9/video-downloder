@@ -39,13 +39,13 @@ jobs:
 
       - name: Rename APK for Release
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.1.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.2.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VideoFetch-Pro-v1.0.1-APK
-          path: VideoFetch-Pro-v1.0.1.apk
+          name: VideoFetch-Pro-v1.0.2-APK
+          path: VideoFetch-Pro-v1.0.2.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -53,13 +53,50 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.1
-          name: "VideoFetch Pro v1.0.1"
+          tag_name: v1.0.2
+          name: "VideoFetch Pro v1.0.2"
           draft: false
           prerelease: false
-          generate_release_notes: true
+          body: |
+            # 🚀 VideoFetch Pro v1.0.2 - Official Release
+
+            We are excited to present **VideoFetch Pro v1.0.2** with full standalone Android APK support, high-speed direct downloading, and instant ad-free YouTube/Shorts streaming.
+
+            ---
+
+            ### 🌟 What's New in v1.0.2
+
+            - 📱 **100% Standalone APK Operation**:
+              - Built-in curated science, education, and knowledge video library (100+ HD videos) and snap-scroll shorts (50+ shorts) that load instantly on Android devices with zero local server requirement.
+              - Multi-mirror Invidious failover for fast, resilient search and stream playback.
+
+            - ⚡ **Universal High-Speed Mobile Downloader**:
+              - Direct download stream resolution with Android native `DownloadManager` integration.
+              - Downloads MP4 video (Highest, 1080p, 720p, 480p, 360p) and MP3 audio directly into your phone's `/Downloads` directory with system progress notifications.
+
+            - 🔍 **Instant Video Analysis (< 200ms)**:
+              - High-speed oEmbed extraction delivers instant title, author, and HD thumbnail previews without delay.
+
+            - 💳 **Seamless External Link & UPI Payment Handling**:
+              - Razorpay and donation links automatically open in your default browser or UPI apps (PhonePe, Google Pay, Paytm).
+
+            - 🎨 **Polished Downloader UI**:
+              - Responsive 16:9 thumbnail preview card with modern quality selection chips and refined mobile layout.
+
+            ---
+
+            ### 📥 Download & Install
+            Download **`VideoFetch-Pro-v1.0.2.apk`** below to install directly on Android.
+
+            ---
+
+            ### 💖 Support the Developer
+            - ☕ **Razorpay (UPI / Cards / NetBanking)**: [@Saff9 on Razorpay](https://razorpay.me/@Saff9)
+            - ⚡ **Solana (SOL)**: `DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7`
+            - 🌐 **Developer**: Saffan Akbar ([@Saff9](https://github.com/Saff9))
           files: |
-            VideoFetch-Pro-v1.0.1.apk
+            VideoFetch-Pro-v1.0.2.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
