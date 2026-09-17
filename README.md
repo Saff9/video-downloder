@@ -1,6 +1,6 @@
 # VideoFetch Pro — Universal Video Downloader, Snap-Scroll Shorts & Ad-Free Feed
 
-[![Release](https://img.shields.io/badge/version-1.0.1-brightgreen.svg)](https://github.com/Saff9/video-downloder)
+[![Release](https://img.shields.io/badge/version-1.0.3-brightgreen.svg)](https://github.com/Saff9/video-downloder)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Android%20APK-blue.svg)](https://github.com/Saff9/video-downloder)
 [![Developer](https://img.shields.io/badge/developer-saffan%20(@Saff9)-purple.svg)](https://github.com/Saff9)
@@ -11,7 +11,7 @@
 
 If you love **VideoFetch Pro** and want to support its continuous development, fast mirror infrastructure, and new features, you can sponsor through any of the options below:
 
-- 💳 **Razorpay Support**: [Support on Razorpay (@Saff9)](https://razorpay.me/@Saff9)
+- 💳 **Razorpay Support**: [Support on Razorpay](https://razorpay.me/@CodeChap?amount=kXxURMaXFk%2Bmrv%2B9uGrYpg%3D%3D)
 - 🪙 **Solana (SOL) Crypto Address**:
   ```text
   DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7
@@ -91,7 +91,7 @@ npm start
 - **Developer**: Saffan Akbar
 - **GitHub**: [@Saff9](https://github.com/Saff9)
 - **Repository**: [https://github.com/Saff9/video-downloder](https://github.com/Saff9/video-downloder)
-- **Support**: [Razorpay Link](https://razorpay.me/@Saff9)
+- **Support**: [Razorpay Link](https://razorpay.me/@CodeChap?amount=kXxURMaXFk%2Bmrv%2B9uGrYpg%3D%3D)
 
 ---
 
