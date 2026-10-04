@@ -151,6 +151,10 @@ class MainActivity : Activity() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+                if (!request.isForMainFrame) {
+                    return false
+                }
+
                 val uri = request.url ?: return false
                 val urlStr = uri.toString()
 

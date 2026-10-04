@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.3';
+  const APP_VERSION = '1.0.4';
 
   // Storage Keys
   const STORAGE = {
@@ -321,110 +321,101 @@
 
 
   // Cached DOM references
-  const els = {
-    // Navigation
-    desktopNavItems: $$('.desktop-nav .nav-item'),
-    mobileNavItems: $$('.mobile-nav .mob-item'),
-    shortsNavItems: $$('.js-shorts-nav'),
-    appViews: $$('.app-view'),
-    quickBlockShortsBtn: $('#quick-block-shorts-btn'),
-    headerRefreshBtn: $('#header-refresh-btn'),
-    themeBtn: $('#theme-btn'),
-    navHistoryCount: $('#nav-history-count'),
+  const els = {};
 
-    // Feed (Science & Education)
-    youtubeSearchForm: $('#youtube-search-form'),
-    youtubeSearchInput: $('#youtube-search-input'),
-    clearSearchBtn: $('#clear-search-btn'),
-    feedRefreshTrigger: $('#feed-refresh-trigger'),
-    videoCategories: $('#video-categories'),
-    categoryChips: $$('#video-categories .chip'),
-    channelCardContainer: $('#channel-card-container'),
-    feedSkel: $('#feed-skel'),
-    videoFeedGrid: $('#video-feed-grid'),
-    videoFeedEmpty: $('#video-feed-empty'),
-    feedLoadMoreWrap: $('#feed-load-more-wrap'),
-    feedLoadMoreBtn: $('#feed-load-more-btn'),
-    feedCountBadge: $('#feed-count-badge'),
-    feedLoadSpinner: $('#feed-load-spinner'),
+  function bindElements() {
+    els.desktopNavItems = $$('.desktop-nav .nav-item');
+    els.mobileNavItems = $$('.mobile-nav .mob-item');
+    els.shortsNavItems = $$('.js-shorts-nav');
+    els.appViews = $$('.app-view');
+    els.quickBlockShortsBtn = $('#quick-block-shorts-btn');
+    els.headerRefreshBtn = $('#header-refresh-btn');
+    els.themeBtn = $('#theme-btn');
+    els.navHistoryCount = $('#nav-history-count');
 
-    // Snap-Scroll Shorts Feed
-    shortsRefreshBtn: $('#shorts-refresh-btn'),
-    shortsSkel: $('#shorts-skel'),
-    shortsReelContainer: $('#shorts-reel-container'),
-    shortsEmpty: $('#shorts-empty'),
-    shortsLoadedCount: $('#shorts-loaded-count'),
+    els.youtubeSearchForm = $('#youtube-search-form');
+    els.youtubeSearchInput = $('#youtube-search-input');
+    els.clearSearchBtn = $('#clear-search-btn');
+    els.feedRefreshTrigger = $('#feed-refresh-trigger');
+    els.videoCategories = $('#video-categories');
+    els.categoryChips = $$('#video-categories .chip');
+    els.channelCardContainer = $('#channel-card-container');
+    els.feedSkel = $('#feed-skel');
+    els.videoFeedGrid = $('#video-feed-grid');
+    els.videoFeedEmpty = $('#video-feed-empty');
+    els.feedLoadMoreWrap = $('#feed-load-more-wrap');
+    els.feedLoadMoreBtn = $('#feed-load-more-btn');
+    els.feedCountBadge = $('#feed-count-badge');
+    els.feedLoadSpinner = $('#feed-load-spinner');
 
-    // Downloader
-    mediaUrlInput: $('#media-url-input'),
-    pasteBtn: $('#paste-btn'),
-    analyzeBtn: $('#analyze-btn'),
-    analyzeBtnText: $('#analyze-btn .btn-text'),
-    analyzeBtnLoader: $('#analyze-btn .btn-loader'),
-    mediaPreviewCard: $('#media-preview-card'),
-    previewThumb: $('#preview-thumb'),
-    previewDuration: $('#preview-duration'),
-    previewPlatformBadge: $('#preview-platform-badge'),
-    previewViews: $('#preview-views'),
-    previewTitle: $('#preview-title'),
-    previewUploader: $('#preview-uploader'),
-    fmtTabs: $$('.fmt-tab'),
-    videoQualitiesList: $('#video-qualities'),
-    audioQualitiesList: $('#audio-qualities'),
-    executeDownloadBtn: $('#execute-download-btn'),
+    els.shortsRefreshBtn = $('#shorts-refresh-btn');
+    els.shortsSkel = $('#shorts-skel');
+    els.shortsReelContainer = $('#shorts-reel-container');
+    els.shortsEmpty = $('#shorts-empty');
+    els.shortsLoadedCount = $('#shorts-loaded-count');
 
-    // History & Bookmarks
-    historyFilterInput: $('#history-filter-input'),
-    clearAllHistory: $('#clear-all-history'),
-    historySubtabs: $$('.hist-tab-btn'),
-    histWatchCount: $('#hist-watch-count'),
-    histBookmarkCount: $('#hist-bookmark-count'),
-    histDownloadCount: $('#hist-download-count'),
-    historyList: $('#history-list'),
-    historyEmptyState: $('#history-empty-state'),
+    els.mediaUrlInput = $('#media-url-input');
+    els.pasteBtn = $('#paste-btn');
+    els.analyzeBtn = $('#analyze-btn');
+    els.analyzeBtnText = $('#analyze-btn .btn-text');
+    els.analyzeBtnLoader = $('#analyze-btn .btn-loader');
+    els.mediaPreviewCard = $('#media-preview-card');
+    els.previewThumb = $('#preview-thumb');
+    els.previewDuration = $('#preview-duration');
+    els.previewPlatformBadge = $('#preview-platform-badge');
+    els.previewViews = $('#preview-views');
+    els.previewTitle = $('#preview-title');
+    els.previewUploader = $('#preview-uploader');
+    els.fmtTabs = $$('.fmt-tab');
+    els.videoQualitiesList = $('#video-qualities');
+    els.audioQualitiesList = $('#audio-qualities');
+    els.executeDownloadBtn = $('#execute-download-btn');
 
-    // Settings
-    prefBlockShorts: $('#pref-block-shorts'),
-    vpsStatusPill: $('#vps-status-pill'),
-    vpsUrlInput: $('#vps-url-input'),
-    vpsTestBtn: $('#vps-test-btn'),
-    vpsSaveBtn: $('#vps-save-btn'),
-    vpsFeedback: $('#vps-feedback'),
-    prefQualitySelect: $('#pref-quality-select'),
-    prefFeedTopicSelect: $('#pref-feed-topic-select'),
-    prefThemeSelect: $('#pref-theme-select'),
-    prefAutopasteCheck: $('#pref-autopaste-check'),
-    btnCheckUpdates: $('#btn-check-updates'),
-    updateStatusText: $('#update-status-text'),
+    els.historyFilterInput = $('#history-filter-input');
+    els.clearAllHistory = $('#clear-all-history');
+    els.historySubtabs = $$('.hist-tab-btn');
+    els.histWatchCount = $('#hist-watch-count');
+    els.histBookmarkCount = $('#hist-bookmark-count');
+    els.histDownloadCount = $('#hist-download-count');
+    els.historyList = $('#history-list');
+    els.historyEmptyState = $('#history-empty-state');
 
-    // Modal Player
-    videoModal: $('#video-modal'),
-    modalTitle: $('#modal-title'),
-    modalCloseBtn: $('#modal-close-btn'),
-    modalFloatBtn: $('#modal-float-btn'),
-    modalIframe: $('#modal-iframe'),
-    modalAuthorBadge: $('#modal-author-badge'),
-    modalAuthorAvatar: $('#modal-author-avatar'),
-    modalViewsBadge: $('#modal-views-badge'),
-    modalDlBtn: $('#modal-dl-btn'),
-    modalCopyLinkBtn: $('#modal-copy-link-btn'),
-    relatedSkel: $('#related-skel'),
-    relatedList: $('#related-list'),
+    els.prefBlockShorts = $('#pref-block-shorts');
+    els.vpsStatusPill = $('#vps-status-pill');
+    els.vpsUrlInput = $('#vps-url-input');
+    els.vpsTestBtn = $('#vps-test-btn');
+    els.vpsSaveBtn = $('#vps-save-btn');
+    els.vpsFeedback = $('#vps-feedback');
+    els.prefQualitySelect = $('#pref-quality-select');
+    els.prefFeedTopicSelect = $('#pref-feed-topic-select');
+    els.prefThemeSelect = $('#pref-theme-select');
+    els.prefAutopasteCheck = $('#pref-autopaste-check');
+    els.btnCheckUpdates = $('#btn-check-updates');
+    els.updateStatusText = $('#update-status-text');
 
-    // Floating Mini-Player Dock
-    floatingMiniPlayer: $('#floating-mini-player'),
-    floatingTitle: $('#floating-title'),
-    floatingIframe: $('#floating-iframe'),
-    floatingExpandBtn: $('#floating-expand-btn'),
-    floatingCloseBtn: $('#floating-close-btn'),
+    els.videoModal = $('#video-modal');
+    els.modalTitle = $('#modal-title');
+    els.modalCloseBtn = $('#modal-close-btn');
+    els.modalFloatBtn = $('#modal-float-btn');
+    els.modalIframe = $('#modal-iframe');
+    els.modalAuthorBadge = $('#modal-author-badge');
+    els.modalAuthorAvatar = $('#modal-author-avatar');
+    els.modalViewsBadge = $('#modal-views-badge');
+    els.modalDlBtn = $('#modal-dl-btn');
+    els.modalCopyLinkBtn = $('#modal-copy-link-btn');
+    els.relatedSkel = $('#related-skel');
+    els.relatedList = $('#related-list');
 
-    // Sponsor Modal
-    sponsorModal: $('#sponsor-modal'),
-    closeSponsorModal: $('#close-sponsor-modal'),
+    els.floatingMiniPlayer = $('#floating-mini-player');
+    els.floatingTitle = $('#floating-title');
+    els.floatingIframe = $('#floating-iframe');
+    els.floatingExpandBtn = $('#floating-expand-btn');
+    els.floatingCloseBtn = $('#floating-close-btn');
 
-    // Toast
-    toast: $('#toast'),
-  };
+    els.sponsorModal = $('#sponsor-modal');
+    els.closeSponsorModal = $('#close-sponsor-modal');
+    els.toast = $('#toast');
+  }
 
   // Safe global avatar error handler to prevent broken image badges
   window.handleAvatarError = function(img, name) {
@@ -2502,6 +2493,7 @@
 
   // ================= APP INITIALIZATION =================
   function init() {
+    bindElements();
     initServiceWorker();
     initListeners();
     updateHistoryCounts();
