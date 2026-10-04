@@ -37,10 +37,29 @@ jobs:
           cd android
           ./gradlew assembleDebug --stacktrace --no-daemon
 
+      - name: Rename APK for Release
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.1.apk
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VideoFetch-Pro-Debug-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: VideoFetch-Pro-v1.0.1-APK
+          path: VideoFetch-Pro-v1.0.1.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
+
+      - name: Create / Update GitHub Release
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.1
+          name: "VideoFetch Pro v1.0.1"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            VideoFetch-Pro-v1.0.1.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
