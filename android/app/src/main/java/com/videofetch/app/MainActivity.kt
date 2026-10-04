@@ -26,6 +26,10 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
+import android.media.MediaScannerConnection
+import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -48,6 +52,7 @@ class MainActivity : Activity() {
 
     private var customView: View? = null
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
+    private var downloadCompleteReceiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,7 @@ class MainActivity : Activity() {
         customViewContainer = findViewById(R.id.fullscreen_custom_view)
 
         requestRequiredPermissions()
+        registerMediaScannerReceiver()
         configureWebView()
 
         // Load local asset index directly so no VPS is ever mandatory to start
@@ -67,6 +73,52 @@ class MainActivity : Activity() {
             webView.loadUrl(savedServer)
         } else {
             webView.loadUrl(ASSET_INDEX)
+        }
+    }
+
+    private fun registerMediaScannerReceiver() {
+        downloadCompleteReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == intent?.action) {
+                    val downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
+                    if (downloadId != -1L && context != null) {
+                        try {
+                            val dm = context.getSystemService(DownloadManager::class.java)
+                            val query = DownloadManager.Query().setFilterById(downloadId)
+                            val cursor = dm?.query(query)
+                            if (cursor != null && cursor.moveToFirst()) {
+                                val uriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
+                                val uriString = if (uriIndex != -1) cursor.getString(uriIndex) else null
+                                val mediaPath = if (!uriString.isNullOrEmpty()) {
+                                    val uri = Uri.parse(uriString)
+                                    uri.path ?: ""
+                                } else {
+                                    ""
+                                }
+                                cursor.close()
+
+                                if (mediaPath.isNotEmpty()) {
+                                    val file = File(mediaPath)
+                                    val mimeType = if (file.name.endsWith(".mp3", ignoreCase = true)) "audio/mpeg" else "video/mp4"
+                                    MediaScannerConnection.scanFile(
+                                        applicationContext,
+                                        arrayOf(file.absolutePath),
+                                        arrayOf(mimeType, "video/*", "audio/*")
+                                    ) { path, uri ->
+                                        // Scanned and indexed in Android MediaStore Gallery
+                                    }
+                                }
+                            }
+                        } catch (_: Exception) {}
+                        toast("Download complete! Added to your Gallery 🎬")
+                    }
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(downloadCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(downloadCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         }
     }
 
@@ -90,6 +142,8 @@ class MainActivity : Activity() {
             setSupportZoom(false)
             allowFileAccess = true
             allowContentAccess = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
             userAgentString = "$userAgentString VideoFetch/2.0 AndroidNative"
         }
 
@@ -347,6 +401,9 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
+        try {
+            downloadCompleteReceiver?.let { unregisterReceiver(it) }
+        } catch (_: Exception) {}
         webView.destroy()
         super.onDestroy()
     }

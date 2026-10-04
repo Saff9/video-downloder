@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.2';
+  const APP_VERSION = '1.0.3';
 
   // Storage Keys
   const STORAGE = {
@@ -679,11 +679,33 @@
         return;
       }
 
-      show(els.feedSkel);
-      hide(els.videoFeedGrid);
-      hide(els.videoFeedEmpty);
-      hide(els.feedLoadMoreWrap);
-      hide(els.channelCardContainer);
+      // Instant zero-delay pre-render for standalone APK / instant start
+      if (!base) {
+        const instantItems = CLIENT_SCIENCE_VIDEOS[category] || CLIENT_SCIENCE_VIDEOS.science_all;
+        if (instantItems && instantItems.length > 0) {
+          feedVideos = instantItems.map((item) => ({
+            id: item.id,
+            type: 'video',
+            title: item.title,
+            uploader: item.uploader,
+            duration: item.dur,
+            views: item.views,
+            publishedText: 'Curated Science',
+            thumbnail: getCleanThumbnail(item.id),
+            avatar: getLocalSvgAvatar(item.uploader),
+            url: `https://www.youtube.com/watch?v=${item.id}`,
+          }));
+          renderVideoFeed(feedVideos);
+          updateFeedPaginationUI();
+          hide(els.feedSkel);
+        }
+      } else {
+        show(els.feedSkel);
+        hide(els.videoFeedGrid);
+        hide(els.videoFeedEmpty);
+        hide(els.feedLoadMoreWrap);
+        hide(els.channelCardContainer);
+      }
     } else {
       isLoadingMoreFeed = true;
       if (els.feedLoadSpinner) show(els.feedLoadSpinner);
@@ -711,11 +733,10 @@
         if (offlineData) {
           try {
             newItems = JSON.parse(offlineData);
-            showToast('Loaded feed from offline cache', '');
           } catch (_) {}
         }
       }
-      if (newItems.length === 0) {
+      if (!newItems || newItems.length === 0) {
         newItems = await fetchDirectCurated(category, feedPage);
       }
     } finally {
@@ -931,9 +952,27 @@
       shortsVideos = [];
       hasMoreShorts = true;
 
-      show(els.shortsSkel);
-      hide(els.shortsReelContainer);
-      hide(els.shortsEmpty);
+      // Instant pre-render from client database
+      if (!base) {
+        shortsVideos = CLIENT_SCIENCE_SHORTS.map((s) => ({
+          id: s.id,
+          type: 'shorts',
+          title: s.title,
+          uploader: s.uploader,
+          duration: s.dur,
+          views: s.views,
+          thumbnail: getCleanThumbnail(s.id),
+          avatar: getLocalSvgAvatar(s.uploader),
+          url: `https://www.youtube.com/shorts/${s.id}`,
+        }));
+        renderShortsReels(shortsVideos);
+        if (els.shortsLoadedCount) els.shortsLoadedCount.textContent = shortsVideos.length;
+        hide(els.shortsSkel);
+      } else {
+        show(els.shortsSkel);
+        hide(els.shortsReelContainer);
+        hide(els.shortsEmpty);
+      }
     } else {
       isLoadingMoreShorts = true;
     }
@@ -959,11 +998,10 @@
         if (offlineShorts) {
           try {
             newItems = JSON.parse(offlineShorts);
-            showToast('Loaded shorts from offline cache', '');
           } catch (_) {}
         }
       }
-      if (newItems.length === 0) {
+      if (!newItems || newItems.length === 0) {
         newItems = await fetchDirectShorts(shortsPage);
       }
     } finally {
