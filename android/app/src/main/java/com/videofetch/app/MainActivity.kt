@@ -104,7 +104,7 @@ class MainActivity : Activity() {
                                         applicationContext,
                                         arrayOf(file.absolutePath),
                                         arrayOf(mimeType, "video/*", "audio/*")
-                                    ) { path, uri ->
+                                    ) { _, _ ->
                                         // Scanned and indexed in Android MediaStore Gallery
                                     }
                                 }
@@ -142,7 +142,9 @@ class MainActivity : Activity() {
             setSupportZoom(false)
             allowFileAccess = true
             allowContentAccess = true
+            @Suppress("DEPRECATION")
             allowFileAccessFromFileURLs = true
+            @Suppress("DEPRECATION")
             allowUniversalAccessFromFileURLs = true
             userAgentString = "$userAgentString VideoFetch/2.0 AndroidNative"
         }
@@ -151,7 +153,6 @@ class MainActivity : Activity() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val uri = request.url ?: return false
                 val urlStr = uri.toString()
-                val scheme = uri.scheme?.lowercase(Locale.ROOT) ?: ""
 
                 // Local bundled assets stay in webview
                 if (urlStr.startsWith(ASSET_INDEX) || urlStr.startsWith("file:///android_asset/")) {
