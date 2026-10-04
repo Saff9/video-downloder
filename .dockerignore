@@ -1,0 +1,9 @@
+node_modules
+server/bin
+.git
+.idea
+.vscode
+*.apk
+server/*.log
+server/server.pid
+android

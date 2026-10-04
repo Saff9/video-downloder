@@ -1,0 +1,1 @@
+# Keep default rules empty for now; app ships without reflection-based libraries.

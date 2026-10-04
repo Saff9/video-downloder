@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer Speed Orbital Ring -->
+    <path
+        android:pathData="M 32,54 A 22,22 0 1,1 76,54"
+        android:strokeColor="#38BDF8"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 76,54 A 22,22 0 0,1 36,68"
+        android:strokeColor="#FF334B"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+    <!-- Core Play Glyph Base -->
+    <path
+        android:pathData="M 46,38 C 43,36 40,38 40,42 L 40,66 C 40,70 43,72 46,70 L 68,56 C 71,54 71,50 68,48 Z"
+        android:fillColor="#FF334B" />
+    <!-- Sharp Forward Inner Dart -->
+    <path
+        android:pathData="M 60,52 L 49,45 C 48,44 46,45 46,47 L 46,61 C 46,63 48,64 49,63 L 60,56 C 61,55 61,53 60,52 Z"
+        android:fillColor="#FFFFFF" />
+</vector>
