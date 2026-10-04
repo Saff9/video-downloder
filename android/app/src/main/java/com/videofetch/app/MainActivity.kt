@@ -96,15 +96,54 @@ class MainActivity : Activity() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val uri = request.url ?: return false
-                val scheme = uri.scheme ?: ""
-                if (scheme == "http" || scheme == "https" || scheme == "file") {
+                val urlStr = uri.toString()
+                val scheme = uri.scheme?.lowercase(Locale.ROOT) ?: ""
+
+                // Local bundled assets stay in webview
+                if (urlStr.startsWith(ASSET_INDEX) || urlStr.startsWith("file:///android_asset/")) {
                     return false
                 }
+
+                // If user is connected to their custom VPS backend web interface, keep browsing it
+                val customServer = prefs.getString(KEY_SERVER, "")
+                if (!customServer.isNullOrBlank() && urlStr.startsWith(customServer)) {
+                    return false
+                }
+
+                // Handle YouTube embed iframes inside webview
+                if (urlStr.contains("youtube.com/embed/") || urlStr.contains("youtube-nocookie.com/embed/")) {
+                    return false
+                }
+
+                // All other external URLs (Razorpay, UPI, GitHub, external browsers) open externally
                 try {
+                    if (urlStr.startsWith("intent://")) {
+                        val intent = Intent.parseUri(urlStr, Intent.URI_INTENT_SCHEME)
+                        if (intent != null) {
+                            val packageManager = packageManager
+                            val info = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                            if (info != null) {
+                                startActivity(intent)
+                            } else {
+                                val fallbackUrl = intent.getStringExtra("browser_fallback_url")
+                                if (!fallbackUrl.isNullOrEmpty()) {
+                                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(fallbackUrl)))
+                                }
+                            }
+                            return true
+                        }
+                    }
+
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivity(intent)
-                } catch (_: Exception) {
-                    toast("Cannot open external link.")
+                } catch (e: Exception) {
+                    try {
+                        // Fallback open via browser
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlStr))
+                        startActivity(browserIntent)
+                    } catch (_: Exception) {
+                        toast("Cannot open external link: " + (e.message ?: ""))
+                    }
                 }
                 return true
             }
@@ -182,6 +221,18 @@ class MainActivity : Activity() {
                     this@MainActivity.downloadFile(url, null, null)
                 } else {
                     toast("Invalid download link.")
+                }
+            }
+        }
+
+        @JavascriptInterface
+        fun openUrl(url: String) {
+            runOnUiThread {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    toast("Cannot open link: ${e.message}")
                 }
             }
         }
