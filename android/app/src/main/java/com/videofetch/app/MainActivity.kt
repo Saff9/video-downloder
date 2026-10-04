@@ -22,12 +22,14 @@ import android.webkit.JavascriptInterface
 import android.webkit.URLUtil
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.webkit.WebViewAssetLoader
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -38,7 +40,7 @@ class MainActivity : Activity() {
     companion object {
         private const val PREFS = "videofetch_prefs"
         private const val KEY_SERVER = "server_url"
-        private const val ASSET_INDEX = "file:///android_asset/web/index.html"
+        private const val ASSET_INDEX = "https://appassets.androidplatform.net/assets/web/index.html"
         private const val REQ_PERMISSION_CODE = 101
     }
 
@@ -46,6 +48,7 @@ class MainActivity : Activity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
     private lateinit var customViewContainer: FrameLayout
+    private lateinit var assetLoader: WebViewAssetLoader
 
     private var customView: View? = null
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
@@ -59,6 +62,10 @@ class MainActivity : Activity() {
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progress)
         customViewContainer = findViewById(R.id.fullscreen_custom_view)
+
+        assetLoader = WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
+            .build()
 
         requestRequiredPermissions()
         registerMediaScannerReceiver()
@@ -161,19 +168,25 @@ class MainActivity : Activity() {
         }
 
         webView.webViewClient = object : WebViewClient() {
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+                val intercepted = assetLoader.shouldInterceptRequest(request.url)
+                if (intercepted != null) return intercepted
+                return super.shouldInterceptRequest(view, request)
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 if (!request.isForMainFrame) return false
                 val uri = request.url ?: return false
                 val urlStr = uri.toString()
 
-                if (urlStr.startsWith(ASSET_INDEX) || urlStr.startsWith("file:///android_asset/")) {
+                if (urlStr.startsWith(ASSET_INDEX) || urlStr.startsWith("https://appassets.androidplatform.net") || urlStr.startsWith("file:///android_asset/")) {
                     return false
                 }
                 val customServer = prefs.getString(KEY_SERVER, "")
                 if (!customServer.isNullOrBlank() && urlStr.startsWith(customServer)) {
                     return false
                 }
-                if (urlStr.contains("youtube.com/embed/") || urlStr.contains("youtube-nocookie.com/embed/")) {
+                if (urlStr.contains("youtube.com/embed/") || urlStr.contains("youtube-nocookie.com/embed/") || urlStr.contains("googlevideo.com")) {
                     return false
                 }
                 if (urlStr.startsWith("blob:") || urlStr.startsWith("data:") || urlStr.startsWith("javascript:") || urlStr.startsWith("about:")) {

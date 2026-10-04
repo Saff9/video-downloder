@@ -39,13 +39,13 @@ jobs:
 
       - name: Rename APK for Release
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.5.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.6.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VideoFetch-Pro-v1.0.5-APK
-          path: VideoFetch-Pro-v1.0.5.apk
+          name: VideoFetch-Pro-v1.0.6-APK
+          path: VideoFetch-Pro-v1.0.6.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -53,41 +53,40 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.5
-          name: "VideoFetch Pro v1.0.5"
+          tag_name: v1.0.6
+          name: "VideoFetch Pro v1.0.6"
           draft: false
           prerelease: false
           body: |
-            # 🚀 VideoFetch Pro v1.0.5 - Official Release
+            # 🚀 VideoFetch Pro v1.0.6 - Official Release
 
-            We are proud to release **VideoFetch Pro v1.0.5** with complete standalone mobile APK fixes, instant feed & shorts rendering, high-speed client-side media resolution, and direct Android Gallery integration.
+            We are excited to present **VideoFetch Pro v1.0.6** with full YouTube embed player fixes on Android WebView via WebViewAssetLoader, completely responsive History and Bookmarks management, zero-delay science feed and vertical shorts, and automatic MediaStore Gallery indexing.
 
             ---
 
-            ### 🌟 What's New in v1.0.5
+            ### 🌟 What's New in v1.0.6
 
-            - 📱 **Instant Zero-Delay Standalone APK Feeds & Shorts**:
-              - Fixed TDZ variable initialization bug in feed and shorts lifecycle so all curated science videos and vertical reels appear immediately on startup.
-              - Full offline database bundled with 100+ high-definition curated science videos and 50+ vertical shorts.
+            - 🎬 **Fixed Video Player for Long & Short Videos**:
+              - Integrated AndroidX `WebViewAssetLoader` to serve assets from a secure HTTPS origin (`https://appassets.androidplatform.net`), resolving YouTube embed origin restrictions (Error 150/101) in Android's WebView.
+              - Optimized embed URLs and removed restrictive iframe referrerpolicy tags for smooth, instant playback.
 
-            - 🎬 **Automatic Gallery & MediaStore Indexing (SnapTube Style)**:
-              - Downloaded videos and MP3s are verified upon completion and instantly scanned into Android's `MediaStore` via `MediaScannerConnection` so they show up directly in your phone's **Gallery, Photos, and Media Player apps**.
-              - Downloaded files now save with their proper full video titles instead of generic timestamps.
+            - 📜 **Fully Responsive History & Bookmarks View**:
+              - Completely redesigned mobile responsive layout for Watch History, Saved Bookmarks, and Download History.
+              - Touch-optimized filter bar, clear log controls, and subtab navigation.
 
-            - ⚡ **Universal High-Speed Mobile Downloader**:
-              - Direct client-side video & MP3 stream resolution with native Android `DownloadManager` integration (notification bar progress & background downloading).
-              - Prevents any invalid `file:///api/download` relative URL errors in standalone APK mode.
+            - 📱 **Instant Zero-Delay Standalone APK Feeds**:
+              - Bundled curated science & education library (100+ HD videos) and vertical reels (50+ shorts) that render immediately on startup.
 
-            - 🎨 **Polished Thumbnail & UI Layout**:
-              - Sleek 16:9 constrained preview card with modern radial badge fallback.
+            - 📥 **SnapTube-Style Gallery Indexing**:
+              - Completed media downloads are scanned into Android's `MediaStore` so they appear instantly in your Gallery / Photos app with their full video titles preserved.
 
             - 💳 **Direct Sponsor & Payment Link Routing**:
-              - Razorpay and Solana donation links open smoothly in your external browser or UPI apps (Google Pay, PhonePe, Paytm).
+              - Razorpay and Solana donation links open smoothly in your external browser or UPI apps.
 
             ---
 
             ### 📥 Download & Install
-            Download **`VideoFetch-Pro-v1.0.5.apk`** below to install directly on Android.
+            Download **`VideoFetch-Pro-v1.0.6.apk`** below to install directly on Android.
 
             ---
 
@@ -96,7 +95,7 @@ jobs:
             - ⚡ **Solana (SOL)**: `DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7`
             - 🌐 **Developer**: Saffan Akbar ([@Saff9](https://github.com/Saff9))
           files: |
-            VideoFetch-Pro-v1.0.5.apk
+            VideoFetch-Pro-v1.0.6.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

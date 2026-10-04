@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.5';
+  const APP_VERSION = '1.0.6';
 
   // Storage Keys
   const STORAGE = {
@@ -1046,7 +1046,7 @@
       .map((s, idx) => {
         const uploaderSafe = s.uploader || 'Science Creator';
         const avatarUrl = getChannelAvatar(uploaderSafe, s.avatar);
-        const embedUrl = `https://www.youtube-nocookie.com/embed/${s.id}?autoplay=1&mute=1&controls=1&loop=1&playlist=${s.id}&enablejsapi=1&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3`;
+        const embedUrl = `https://www.youtube.com/embed/${s.id}?autoplay=1&mute=1&controls=1&loop=1&playlist=${s.id}&enablejsapi=1&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3`;
         const bookmarked = isBookmarked(s.url);
         const thumbHd = getCleanThumbnail(s.id, s.thumbnail);
 
@@ -1064,7 +1064,7 @@
 
         <!-- Video Frame -->
         <div class="reel-video-container">
-          <iframe src="${idx === 0 ? embedUrl : ''}" data-src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <iframe src="${idx === 0 ? embedUrl : ''}" data-src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
         
         <!-- Right Action Sidebar -->
@@ -1201,7 +1201,7 @@
     els.modalCopyLinkBtn.dataset.url = url;
 
     if (videoId) {
-      els.modalIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+      els.modalIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
       loadRelatedVideos(videoId);
     } else {
       els.modalIframe.src = url;
@@ -1290,7 +1290,7 @@
     document.body.style.overflow = '';
 
     els.floatingTitle.textContent = currentPlaying.title || 'Playing Video';
-    els.floatingIframe.src = `https://www.youtube-nocookie.com/embed/${currentPlaying.videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+    els.floatingIframe.src = `https://www.youtube.com/embed/${currentPlaying.videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
 
     show(els.floatingMiniPlayer);
     showToast('Video docked in floating mini-player', '');
