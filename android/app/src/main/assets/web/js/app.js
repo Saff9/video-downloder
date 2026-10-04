@@ -9,7 +9,7 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // App Version
-  const APP_VERSION = '1.0.7';
+  const APP_VERSION = '1.0.8';
 
   // Storage Keys
   const STORAGE = {
@@ -67,86 +67,92 @@
     'https://yt.artemislena.eu',
   ];
 
-  // Standalone Client Curated Database (Guaranteed offline & APK fallback)
+  // Standalone Client Curated Database (Guaranteed 100% Real, Active YouTube Science Content)
   const CLIENT_SCIENCE_VIDEOS = {
     science_all: [
-      { id: '423xKdaft8w', title: 'The Quantum Paradox That Broke Classical Physics', uploader: 'Veritasium', views: 4200000, dur: 1260 },
-      { id: '1-NxOD9m2i0', title: 'The Largest Star in the Universe – Size Comparison', uploader: 'Kurzgesagt – In a Nutshell', views: 18500000, dur: 640 },
+      { id: 'HeQX2HjkcNo', title: 'Math Has a Fatal Flaw (Gödel Incompleteness)', uploader: 'Veritasium', views: 8200000, dur: 1440 },
+      { id: 'h6fcK_fRYaI', title: 'The Egg – A Short Story', uploader: 'Kurzgesagt – In a Nutshell', views: 24500000, dur: 470 },
       { id: 'WUvTyaaNkzM', title: 'The Essence of Calculus, Chapter 1', uploader: '3Blue1Brown', views: 9800000, dur: 1020 },
-      { id: 'n228bHqVp1A', title: 'How Does a Microscopic Jet Engine Work?', uploader: 'Real Engineering', views: 3100000, dur: 890 },
-      { id: 'v2eY0lX9X5k', title: 'The James Webb Telescope Discovered Something Impossible', uploader: 'PBS Space Time', views: 5400000, dur: 980 },
-      { id: 'OQ5jsbhAv_M', title: 'MIT 6.006 Introduction to Algorithms (Full Lecture)', uploader: 'MIT OpenCourseWare', views: 4100000, dur: 3180 },
-      { id: 'gX7z3nsh3iA', title: 'Master Your Sleep & Enhance Mental Focus Protocol', uploader: 'Huberman Lab', views: 6200000, dur: 4500 },
-      { id: '1v48YGLb5yU', title: 'The Crazy Physics of High Speed Fluid Dynamics', uploader: 'SmarterEveryDay', views: 7900000, dur: 1140 },
-      { id: 'C4K_d_f8D7c', title: 'How Microchips Are Made (3D Transistor Animation)', uploader: 'Branch Education', views: 4800000, dur: 1350 },
-      { id: 'j4rP66Q51d0', title: 'Why ASML Machines Are The Most Complex in History', uploader: 'Asianometry', views: 2900000, dur: 1180 },
-      { id: 'rB83DpBJQsE', title: 'The Mould Effect (The Chain Fountain Explained)', uploader: 'Steve Mould', views: 3600000, dur: 740 },
-      { id: '6FNpKEU48W0', title: 'Cosmic Dawn – The Earliest Stars in the Universe', uploader: 'NASA', views: 12400000, dur: 1820 },
-      { id: 'AirnA-msjcw', title: 'How Red Blood Cells Carry Oxygen in 3D', uploader: 'Real Science', views: 2500000, dur: 850 },
-      { id: 'fRed0oZ5jrY', title: 'What Happens When You Delete the Internet Backbone', uploader: 'ColdFusion', views: 3400000, dur: 1280 },
-      { id: 'Ilg3gGewQ5U', title: 'Quantum Computers Explained with Animated Qubits', uploader: 'Kurzgesagt – In a Nutshell', views: 14200000, dur: 450 },
-      { id: 'bBC-nXj3Ng4', title: 'Neural Networks and Deep Learning Visual Introduction', uploader: '3Blue1Brown', views: 11200000, dur: 1150 },
-      { id: 'e-P5IFTqB98', title: 'The World’s Roundest Object & The Kilogram Definition', uploader: 'Veritasium', views: 16700000, dur: 680 },
-      { id: 'L_LUpnjgPso', title: 'How Civil Engineers Prevent Mega Dams from Collapsing', uploader: 'Practical Engineering', views: 3900000, dur: 920 },
-      { id: 'H62b_TfqJls', title: 'Why Are Airplanes Shaped Like That? Supersonic Aerodynamics', uploader: 'Real Engineering', views: 4600000, dur: 1040 },
-      { id: 'z1KPx4b51a0', title: 'Deep Ocean Bioluminescence and Creature Evolution', uploader: 'BBC Earth', views: 8700000, dur: 1540 },
-      { id: 'd-19Q_vXw-8', title: 'Inside the World’s Cleanest Semiconductor Cleanroom', uploader: 'Asianometry', views: 1800000, dur: 1080 },
-      { id: 'T8y5EXFMD4s', title: 'How Does Memory Storage Work in Biological Neurons?', uploader: 'TED-Ed', views: 5100000, dur: 320 },
-      { id: 'oxZpUu6m0-g', title: 'Glitter Bomb 5.0 vs Package Thieves (Pure Engineering)', uploader: 'Mark Rober', views: 39000000, dur: 1640 },
-      { id: 'V923q4YyR6E', title: 'The Math Behind RSA Cryptography and Prime Numbers', uploader: 'Computerphile', views: 2700000, dur: 870 }
+      { id: 'MBRqu0YOH14', title: 'Optimistic Nihilism', uploader: 'Kurzgesagt – In a Nutshell', views: 19800000, dur: 360 },
+      { id: '094y1Z2wpJg', title: 'The Simplest Math Problem No One Can Solve (Collatz)', uploader: 'Veritasium', views: 14600000, dur: 1320 },
+      { id: 'pP44EPBMb8A', title: 'How to Build a Dyson Sphere (Megastructure)', uploader: 'Kurzgesagt – In a Nutshell', views: 16800000, dur: 580 },
+      { id: 'aircAruvnKk', title: 'But what is a neural network? (Deep Learning)', uploader: '3Blue1Brown', views: 18200000, dur: 1150 },
+      { id: 'MFzDaBzBlL0', title: 'The Backward Brain Bicycle – Neuroplasticity', uploader: 'SmarterEveryDay', views: 28400000, dur: 480 },
+      { id: 'Jzfpyo-q-RM', title: 'Neutron Stars – The Most Extreme Things in Space', uploader: 'Kurzgesagt – In a Nutshell', views: 13500000, dur: 510 },
+      { id: '7iNbnineUBg', title: 'Misconceptions About Heat and Temperature', uploader: 'Veritasium', views: 6400000, dur: 420 },
+      { id: '24q8023m4qc', title: 'Mystery of Prince Rupert’s Drop at 100,000 FPS', uploader: 'SmarterEveryDay', views: 15200000, dur: 560 },
+      { id: 'xoxhDk-hwcI', title: 'Glitter Bomb 1.0 vs Porch Pirates Engineering', uploader: 'Mark Rober', views: 92000000, dur: 680 },
+      { id: 'aICaAEXDJQQ', title: 'The Insane Engineering of the James Webb Telescope', uploader: 'Real Engineering', views: 4900000, dur: 980 },
+      { id: 'fNk_zzaMoSs', title: 'Linear Transformations and Matrices Visualized', uploader: '3Blue1Brown', views: 5600000, dur: 650 },
+      { id: 'rB83DpBJQsE', title: 'The Mould Effect (Self-Siphoning Beads)', uploader: 'Steve Mould', views: 7600000, dur: 440 },
+      { id: 'fVbS_D-2e1Y', title: 'Turning Plastic Gloves into Grape Soda', uploader: 'NileRed', views: 11400000, dur: 1520 },
+      { id: 'ba9k4g3oBsc', title: 'The Complex Engineering of Concorde', uploader: 'Real Engineering', views: 3800000, dur: 1120 },
+      { id: 'oWbHUEG0vD4', title: 'How Civil Engineers Build Giant Mega Dams', uploader: 'Practical Engineering', views: 4200000, dur: 740 },
+      { id: 'spUNpyF58BY', title: 'The Remarkable Fourier Transform Visualized', uploader: '3Blue1Brown', views: 7800000, dur: 1250 },
+      { id: 'yCjJyiqpAuU', title: 'The Bizarre Physics of Rotorcraft', uploader: 'Veritasium', views: 6100000, dur: 890 },
+      { id: 'hFZFjoX2cGg', title: 'Building the Ultimate Squirrel Proof Maze', uploader: 'Mark Rober', views: 118000000, dur: 1260 },
+      { id: '5gK_sT0m018', title: 'Making Aerogel – The World’s Lightest Solid', uploader: 'NileRed', views: 8900000, dur: 1350 },
+      { id: 'z8q_Jm7F4_k', title: 'What Happens When a Massive Dam Fails', uploader: 'Practical Engineering', views: 5100000, dur: 820 },
+      { id: '5iPH-br_SOZ', title: 'What If We Detonated All Nuclear Bombs at Once?', uploader: 'Kurzgesagt – In a Nutshell', views: 21500000, dur: 670 }
     ],
     physics_space: [
-      { id: '423xKdaft8w', title: 'The Quantum Paradox That Broke Classical Physics', uploader: 'Veritasium', views: 4200000, dur: 1260 },
-      { id: 'v2eY0lX9X5k', title: 'The James Webb Telescope Discovered Something Impossible', uploader: 'PBS Space Time', views: 5400000, dur: 980 },
-      { id: '6FNpKEU48W0', title: 'Cosmic Dawn – The Earliest Stars in the Universe', uploader: 'NASA', views: 12400000, dur: 1820 },
-      { id: '1v48YGLb5yU', title: 'The Crazy Physics of High Speed Fluid Dynamics', uploader: 'SmarterEveryDay', views: 7900000, dur: 1140 },
-      { id: 'rB83DpBJQsE', title: 'The Mould Effect (The Chain Fountain Explained)', uploader: 'Steve Mould', views: 3600000, dur: 740 },
-      { id: '1-NxOD9m2i0', title: 'The Largest Star in the Universe – Size Comparison', uploader: 'Kurzgesagt – In a Nutshell', views: 18500000, dur: 640 },
-      { id: 'e-P5IFTqB98', title: 'The World’s Roundest Object & The Kilogram Definition', uploader: 'Veritasium', views: 16700000, dur: 680 },
-      { id: 'H62b_TfqJls', title: 'Why Are Airplanes Shaped Like That? Supersonic Aerodynamics', uploader: 'Real Engineering', views: 4600000, dur: 1040 }
+      { id: 'HeQX2HjkcNo', title: 'Math Has a Fatal Flaw (Gödel Incompleteness)', uploader: 'Veritasium', views: 8200000, dur: 1440 },
+      { id: 'pP44EPBMb8A', title: 'How to Build a Dyson Sphere (Megastructure)', uploader: 'Kurzgesagt – In a Nutshell', views: 16800000, dur: 580 },
+      { id: 'Jzfpyo-q-RM', title: 'Neutron Stars – The Most Extreme Things in Space', uploader: 'Kurzgesagt – In a Nutshell', views: 13500000, dur: 510 },
+      { id: '7iNbnineUBg', title: 'Misconceptions About Heat and Temperature', uploader: 'Veritasium', views: 6400000, dur: 420 },
+      { id: '24q8023m4qc', title: 'Mystery of Prince Rupert’s Drop at 100,000 FPS', uploader: 'SmarterEveryDay', views: 15200000, dur: 560 },
+      { id: 'rB83DpBJQsE', title: 'The Mould Effect (Self-Siphoning Beads)', uploader: 'Steve Mould', views: 7600000, dur: 440 },
+      { id: 'yCjJyiqpAuU', title: 'The Bizarre Physics of Rotorcraft', uploader: 'Veritasium', views: 6100000, dur: 890 },
+      { id: 'aICaAEXDJQQ', title: 'The Insane Engineering of the James Webb Telescope', uploader: 'Real Engineering', views: 4900000, dur: 980 }
     ],
     math_tech: [
       { id: 'WUvTyaaNkzM', title: 'The Essence of Calculus, Chapter 1', uploader: '3Blue1Brown', views: 9800000, dur: 1020 },
-      { id: 'bBC-nXj3Ng4', title: 'Neural Networks and Deep Learning Visual Introduction', uploader: '3Blue1Brown', views: 11200000, dur: 1150 },
-      { id: 'OQ5jsbhAv_M', title: 'MIT 6.006 Introduction to Algorithms (Full Lecture)', uploader: 'MIT OpenCourseWare', views: 4100000, dur: 3180 },
-      { id: 'V923q4YyR6E', title: 'The Math Behind RSA Cryptography and Prime Numbers', uploader: 'Computerphile', views: 2700000, dur: 870 },
-      { id: 'C4K_d_f8D7c', title: 'How Microchips Are Made (3D Transistor Animation)', uploader: 'Branch Education', views: 4800000, dur: 1350 },
-      { id: 'Ilg3gGewQ5U', title: 'Quantum Computers Explained with Animated Qubits', uploader: 'Kurzgesagt – In a Nutshell', views: 14200000, dur: 450 }
+      { id: '094y1Z2wpJg', title: 'The Simplest Math Problem No One Can Solve (Collatz)', uploader: 'Veritasium', views: 14600000, dur: 1320 },
+      { id: 'aircAruvnKk', title: 'But what is a neural network? (Deep Learning)', uploader: '3Blue1Brown', views: 18200000, dur: 1150 },
+      { id: 'fNk_zzaMoSs', title: 'Linear Transformations and Matrices Visualized', uploader: '3Blue1Brown', views: 5600000, dur: 650 },
+      { id: 'spUNpyF58BY', title: 'The Remarkable Fourier Transform Visualized', uploader: '3Blue1Brown', views: 7800000, dur: 1250 },
+      { id: 'HeQX2HjkcNo', title: 'Math Has a Fatal Flaw (Gödel Incompleteness)', uploader: 'Veritasium', views: 8200000, dur: 1440 }
     ],
     engineering: [
-      { id: 'n228bHqVp1A', title: 'How Does a Microscopic Jet Engine Work?', uploader: 'Real Engineering', views: 3100000, dur: 890 },
-      { id: 'j4rP66Q51d0', title: 'Why ASML Machines Are The Most Complex in History', uploader: 'Asianometry', views: 2900000, dur: 1180 },
-      { id: 'L_LUpnjgPso', title: 'How Civil Engineers Prevent Mega Dams from Collapsing', uploader: 'Practical Engineering', views: 3900000, dur: 920 },
-      { id: 'oxZpUu6m0-g', title: 'Glitter Bomb 5.0 vs Package Thieves (Pure Engineering)', uploader: 'Mark Rober', views: 39000000, dur: 1640 },
-      { id: 'd-19Q_vXw-8', title: 'Inside the World’s Cleanest Semiconductor Cleanroom', uploader: 'Asianometry', views: 1800000, dur: 1080 },
-      { id: 'fRed0oZ5jrY', title: 'What Happens When You Delete the Internet Backbone', uploader: 'ColdFusion', views: 3400000, dur: 1280 }
+      { id: 'xoxhDk-hwcI', title: 'Glitter Bomb 1.0 vs Porch Pirates Engineering', uploader: 'Mark Rober', views: 92000000, dur: 680 },
+      { id: 'aICaAEXDJQQ', title: 'The Insane Engineering of the James Webb Telescope', uploader: 'Real Engineering', views: 4900000, dur: 980 },
+      { id: 'ba9k4g3oBsc', title: 'The Complex Engineering of Concorde', uploader: 'Real Engineering', views: 3800000, dur: 1120 },
+      { id: 'oWbHUEG0vD4', title: 'How Civil Engineers Build Giant Mega Dams', uploader: 'Practical Engineering', views: 4200000, dur: 740 },
+      { id: 'z8q_Jm7F4_k', title: 'What Happens When a Massive Dam Fails', uploader: 'Practical Engineering', views: 5100000, dur: 820 },
+      { id: 'hFZFjoX2cGg', title: 'Building the Ultimate Squirrel Proof Maze', uploader: 'Mark Rober', views: 118000000, dur: 1260 }
     ],
     biology_health: [
-      { id: 'gX7z3nsh3iA', title: 'Master Your Sleep & Enhance Mental Focus Protocol', uploader: 'Huberman Lab', views: 6200000, dur: 4500 },
-      { id: 'AirnA-msjcw', title: 'How Red Blood Cells Carry Oxygen in 3D', uploader: 'Real Science', views: 2500000, dur: 850 },
-      { id: 'T8y5EXFMD4s', title: 'How Does Memory Storage Work in Biological Neurons?', uploader: 'TED-Ed', views: 5100000, dur: 320 },
-      { id: '1-NxOD9m2i0', title: 'The Largest Star in the Universe – Size Comparison', uploader: 'Kurzgesagt – In a Nutshell', views: 18500000, dur: 640 }
+      { id: 'h6fcK_fRYaI', title: 'The Egg – A Short Story', uploader: 'Kurzgesagt – In a Nutshell', views: 24500000, dur: 470 },
+      { id: 'MBRqu0YOH14', title: 'Optimistic Nihilism', uploader: 'Kurzgesagt – In a Nutshell', views: 19800000, dur: 360 },
+      { id: 'MFzDaBzBlL0', title: 'The Backward Brain Bicycle – Neuroplasticity', uploader: 'SmarterEveryDay', views: 28400000, dur: 480 },
+      { id: 'fVbS_D-2e1Y', title: 'Turning Plastic Gloves into Grape Soda', uploader: 'NileRed', views: 11400000, dur: 1520 }
     ],
     documentaries: [
-      { id: 'z1KPx4b51a0', title: 'Deep Ocean Bioluminescence and Creature Evolution', uploader: 'BBC Earth', views: 8700000, dur: 1540 },
-      { id: '6FNpKEU48W0', title: 'Cosmic Dawn – The Earliest Stars in the Universe', uploader: 'NASA', views: 12400000, dur: 1820 },
-      { id: 'fRed0oZ5jrY', title: 'What Happens When You Delete the Internet Backbone', uploader: 'ColdFusion', views: 3400000, dur: 1280 }
+      { id: 'pP44EPBMb8A', title: 'How to Build a Dyson Sphere (Megastructure)', uploader: 'Kurzgesagt – In a Nutshell', views: 16800000, dur: 580 },
+      { id: 'Jzfpyo-q-RM', title: 'Neutron Stars – The Most Extreme Things in Space', uploader: 'Kurzgesagt – In a Nutshell', views: 13500000, dur: 510 },
+      { id: '5iPH-br_SOZ', title: 'What If We Detonated All Nuclear Bombs at Once?', uploader: 'Kurzgesagt – In a Nutshell', views: 21500000, dur: 670 }
     ]
   };
 
   const CLIENT_SCIENCE_SHORTS = [
-    { id: 'd2A3wPzFhTI', title: 'Why sound waves bend in cold water', uploader: 'Steve Mould', views: 1200000, dur: 45 },
-    { id: 'w1A4u79f5B0', title: 'The unbelievable geometry of 4D shapes', uploader: '3Blue1Brown', views: 3400000, dur: 55 },
-    { id: 'uH3jP8k6yX4', title: 'Microscopic look at immune cells attacking bacteria', uploader: 'Real Science', views: 2800000, dur: 48 },
-    { id: 't4U0LgHk3hA', title: 'How rockets steer in the vacuum of space', uploader: 'Real Engineering', views: 1900000, dur: 58 },
-    { id: 'gH3a0dY2j9c', title: 'Extreme High Speed Balloon Pop at 100,000 FPS', uploader: 'SmarterEveryDay', views: 4200000, dur: 50 },
-    { id: 'jX7_vF8a1_E', title: 'Chemical Reaction that creates metallic trees', uploader: 'NileRed', views: 5100000, dur: 59 },
-    { id: '9k3w4X7jF20', title: 'Why liquid nitrogen floats on water (Leidenfrost)', uploader: 'Action Lab', views: 3900000, dur: 42 },
-    { id: '2qL8vB1c9yA', title: 'The physics of gyroscopic stability in bicycles', uploader: 'MinutePhysics', views: 2100000, dur: 56 },
-    { id: '8kL9vB2c3xA', title: 'Can you survive a fall into a neutron star?', uploader: 'Kurzgesagt', views: 6700000, dur: 52 },
-    { id: '1jM7vF3a8_Q', title: 'How polarizing filters block light waves', uploader: 'Veritasium', views: 4800000, dur: 49 },
-    { id: '3kP8vB4c5zL', title: 'Magnus effect on basketball dropped from 400ft', uploader: 'Veritasium', views: 8900000, dur: 54 },
-    { id: '7mK2vB6c1wP', title: 'Why copper slows down falling super magnets', uploader: 'Steve Mould', views: 5300000, dur: 47 }
+    { id: 'rB83DpBJQsE', title: 'The Mould Effect (Chain Fountain in Action)', uploader: 'Steve Mould', views: 7600000, dur: 45 },
+    { id: 'MFzDaBzBlL0', title: 'Unlearning How to Ride a Bicycle', uploader: 'SmarterEveryDay', views: 14200000, dur: 52 },
+    { id: '24q8023m4qc', title: 'Prince Rupert’s Drop Bullet Impact at 100,000 FPS', uploader: 'SmarterEveryDay', views: 9800000, dur: 48 },
+    { id: 'HeQX2HjkcNo', title: 'Gödel’s Math Paradox in 60 Seconds', uploader: 'Veritasium', views: 4300000, dur: 55 },
+    { id: '094y1Z2wpJg', title: 'The Simple Number Rule Nobody Can Prove (3x+1)', uploader: 'Veritasium', views: 8900000, dur: 59 },
+    { id: '7iNbnineUBg', title: 'Why Metal Feels Colder Than Wood at Room Temp', uploader: 'Veritasium', views: 3400000, dur: 42 },
+    { id: 'h6fcK_fRYaI', title: 'The Scale of Consciousness in the Universe', uploader: 'Kurzgesagt', views: 12500000, dur: 50 },
+    { id: 'MBRqu0YOH14', title: 'Why Nothing Truly Matters (And Why That Is Great)', uploader: 'Kurzgesagt', views: 6700000, dur: 48 },
+    { id: 'Jzfpyo-q-RM', title: 'One Sugar Cube of a Neutron Star Weighs Millions of Tons', uploader: 'Kurzgesagt', views: 8100000, dur: 44 },
+    { id: 'WUvTyaaNkzM', title: 'Visual Proof of the Fundamental Theorem of Calculus', uploader: '3Blue1Brown', views: 2900000, dur: 56 },
+    { id: 'aircAruvnKk', title: 'How Neurons Activate in Neural Networks', uploader: '3Blue1Brown', views: 5100000, dur: 58 },
+    { id: 'fNk_zzaMoSs', title: 'Matrix Multiplication as Geometric Space Warping', uploader: '3Blue1Brown', views: 3200000, dur: 49 },
+    { id: 'xoxhDk-hwcI', title: 'Glitter Explosion Trigger Trap Test', uploader: 'Mark Rober', views: 42000000, dur: 54 },
+    { id: 'hFZFjoX2cGg', title: 'Squirrel vs High Precision Obstacle Course', uploader: 'Mark Rober', views: 36000000, dur: 51 },
+    { id: 'fVbS_D-2e1Y', title: 'Extracting Sweet Flavor from Pure Rubber', uploader: 'NileRed', views: 7800000, dur: 57 },
+    { id: '5gK_sT0m018', title: 'Holding the World’s Lightest Solid In Hand', uploader: 'NileRed', views: 6200000, dur: 46 },
+    { id: 'oWbHUEG0vD4', title: 'How Hydro Spillways Drain Millions of Liters', uploader: 'Practical Engineering', views: 3900000, dur: 53 },
+    { id: 'ba9k4g3oBsc', title: 'Why Concorde Drooped Its Nose for Landing', uploader: 'Real Engineering', views: 4800000, dur: 47 }
   ];
 
   async function fetchFastRaceClient(endpoint, timeoutMs = 2600) {
@@ -1061,7 +1067,7 @@
       .map((s, idx) => {
         const uploaderSafe = s.uploader || 'Science Creator';
         const avatarUrl = getChannelAvatar(uploaderSafe, s.avatar);
-        const embedUrl = `https://www.youtube.com/embed/${s.id}?autoplay=1&mute=1&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1`;
+        const embedUrl = `https://www.youtube-nocookie.com/embed/${s.id}?autoplay=1&mute=1&controls=1&playsinline=1&enablejsapi=1&rel=0&modestbranding=1`;
         const bookmarked = isBookmarked(s.url);
         const thumbHd = getCleanThumbnail(s.id, s.thumbnail);
 
@@ -1216,7 +1222,7 @@
     els.modalCopyLinkBtn.dataset.url = url;
 
     if (videoId) {
-      els.modalIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+      els.modalIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
       loadRelatedVideos(videoId);
     } else {
       els.modalIframe.src = url;

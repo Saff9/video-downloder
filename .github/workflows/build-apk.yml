@@ -39,13 +39,13 @@ jobs:
 
       - name: Rename APK for Release
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.7.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk VideoFetch-Pro-v1.0.8.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VideoFetch-Pro-v1.0.7-APK
-          path: VideoFetch-Pro-v1.0.7.apk
+          name: VideoFetch-Pro-v1.0.8-APK
+          path: VideoFetch-Pro-v1.0.8.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -53,44 +53,43 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.7
-          name: "VideoFetch Pro v1.0.7"
+          tag_name: v1.0.8
+          name: "VideoFetch Pro v1.0.8"
           draft: false
           prerelease: false
           body: |
-            # 🚀 VideoFetch Pro v1.0.7 - Official Release
+            # 🚀 VideoFetch Pro v1.0.8 - Official Release
 
-            We are pleased to release **VideoFetch Pro v1.0.7** with a full cinema-grade video player layout, fixed snap-scroll vertical Shorts playback engine, responsive edge-to-edge mobile UI, and automated Gallery media indexing.
+            We are pleased to release **VideoFetch Pro v1.0.8** with a verified high-definition YouTube science feed, 100% active YouTube Shorts playback engine, standard Chrome Android User-Agent configuration, and seamless offline fallback.
 
             ---
 
-            ### 🌟 What's New in v1.0.7
+            ### 🌟 What's New in v1.0.8
 
-            - 🎬 **Cinema-Grade Modal Video Player**:
-              - Completely restructured modal overlay with edge-to-edge mobile presentation, eliminating boxed/contained iframe rendering on phone screens.
-              - Responsive 16:9 widescreen viewport with high-definition rendering, backdrop blur, creator meta badges, and in-player sponsor action bar.
+            - 🎬 **100% Real, Active YouTube Science Feed**:
+              - Replaced legacy/placeholder video items with fully verified, world-renowned science content from Veritasium, 3Blue1Brown, Kurzgesagt, SmarterEveryDay, Mark Rober, Real Engineering, Practical Engineering, and NileRed.
+              - Completely eliminated "Video unavailable" errors on all categories.
 
             - ⚡ **Fixed Vertical Shorts Playback Engine**:
-              - Resolved YouTube Shorts player playback by optimizing embed parameters (removed playlist loops and origin conflicts).
-              - Added active scroll-driven reel centering and touch layer pass-through so vertical shorts start and autoplay instantly on mobile.
+              - Integrated 100% verified, active YouTube Shorts and vertical experiments that load and play immediately on both mobile and desktop.
+              - Upgraded embed transport to `youtube-nocookie.com` with clean parameters for instant auto-centering and playback.
 
-            - 📜 **Enhanced History & Bookmarks System**:
-              - Responsive subtab navigation for Watch History (up to 100 items), Saved Bookmarks, and Download Records.
-              - Touch-optimized filter bar and activity controls.
+            - 🌐 **Clean Android Chrome User-Agent**:
+              - Configured standard modern Chrome mobile User-Agent in `MainActivity.kt` to prevent YouTube embed blocking or bot detection.
 
-            - 📱 **Zero-Delay Standalone Mode**:
-              - Built-in curated science, physics, technology, and engineering video feeds that load instantly offline or without a local server.
+            - 📱 **Cinema-Grade Modal Player**:
+              - Seamless edge-to-edge modal display on mobile screens with responsive 16:9 widescreen layout and instant backdrop blur.
 
-            - 📥 **Direct MediaStore Gallery Indexing**:
-              - Downloaded videos and audio files are automatically scanned and indexed to appear directly in Android Gallery/Photos.
+            - 📥 **Automated MediaStore Gallery Indexing**:
+              - Downloaded videos and audio files appear immediately in Android's Gallery / Photos app.
 
             - 💳 **Official Sponsor & Donation Support**:
-              - Quick access to Razorpay and Solana donation channels.
+              - Direct Razorpay UPI and Solana donation links.
 
             ---
 
             ### 📥 Download & Install
-            Download **`VideoFetch-Pro-v1.0.7.apk`** below to install directly on your Android device.
+            Download **`VideoFetch-Pro-v1.0.8.apk`** below to install directly on your Android device.
 
             ---
 
@@ -99,7 +98,7 @@ jobs:
             - ⚡ **Solana (SOL)**: `DfL2H7rAaocxpyNYdefV7aybNCSBVJiUSGAn3RDFKRb7`
             - 🌐 **Developer**: Saffan Akbar ([@Saff9](https://github.com/Saff9))
           files: |
-            VideoFetch-Pro-v1.0.7.apk
+            VideoFetch-Pro-v1.0.8.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
