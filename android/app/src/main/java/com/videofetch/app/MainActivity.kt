@@ -3,12 +3,14 @@ package com.videofetch.app
 import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
-import android.content.ClipData
+import android.content.BroadcastReceiver
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,12 +28,7 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
-import android.content.BroadcastReceiver
-import android.content.IntentFilter
-import android.media.MediaScannerConnection
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -76,6 +73,23 @@ class MainActivity : Activity() {
         }
     }
 
+    private fun requestRequiredPermissions() {
+        val permissions = mutableListOf<String>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+        if (permissions.isNotEmpty()) {
+            requestPermissions(permissions.toTypedArray(), REQ_PERMISSION_CODE)
+        }
+    }
+
     private fun registerMediaScannerReceiver() {
         downloadCompleteReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -87,46 +101,43 @@ class MainActivity : Activity() {
                             val query = DownloadManager.Query().setFilterById(downloadId)
                             val cursor = dm?.query(query)
                             if (cursor != null && cursor.moveToFirst()) {
-                                val uriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
-                                val uriString = if (uriIndex != -1) cursor.getString(uriIndex) else null
-                                val mediaPath = if (!uriString.isNullOrEmpty()) {
-                                    val uri = Uri.parse(uriString)
-                                    uri.path ?: ""
-                                } else {
-                                    ""
+                                val statusIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+                                val status = if (statusIndex != -1) cursor.getInt(statusIndex) else -1
+
+                                if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                    val uriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
+                                    val uriString = if (uriIndex != -1) cursor.getString(uriIndex) else null
+                                    if (!uriString.isNullOrEmpty()) {
+                                        val uri = Uri.parse(uriString)
+                                        val filePath = if (uri.scheme == "file") uri.path ?: "" else ""
+                                        if (filePath.isNotEmpty()) {
+                                            val file = File(filePath)
+                                            val mimeType = if (file.name.endsWith(".mp3", ignoreCase = true)) "audio/mpeg" else "video/mp4"
+                                            MediaScannerConnection.scanFile(
+                                                applicationContext,
+                                                arrayOf(file.absolutePath),
+                                                arrayOf(mimeType)
+                                            ) { _, _ -> }
+                                        }
+                                    }
+                                    toast("Download complete! Added to your Gallery 🎬")
+                                } else if (status == DownloadManager.STATUS_FAILED) {
+                                    val reasonIndex = cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
+                                    val reason = if (reasonIndex != -1) cursor.getInt(reasonIndex) else 0
+                                    toast("Download failed (code: $reason)")
                                 }
                                 cursor.close()
-
-                                if (mediaPath.isNotEmpty()) {
-                                    val file = File(mediaPath)
-                                    val mimeType = if (file.name.endsWith(".mp3", ignoreCase = true)) "audio/mpeg" else "video/mp4"
-                                    MediaScannerConnection.scanFile(
-                                        applicationContext,
-                                        arrayOf(file.absolutePath),
-                                        arrayOf(mimeType, "video/*", "audio/*")
-                                    ) { _, _ ->
-                                        // Scanned and indexed in Android MediaStore Gallery
-                                    }
-                                }
                             }
                         } catch (_: Exception) {}
-                        toast("Download complete! Added to your Gallery 🎬")
                     }
                 }
             }
         }
+        val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(downloadCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED)
+            registerReceiver(downloadCompleteReceiver, filter, RECEIVER_EXPORTED)
         } else {
-            registerReceiver(downloadCompleteReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        }
-    }
-
-    private fun requestRequiredPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQ_PERMISSION_CODE)
-            }
+            registerReceiver(downloadCompleteReceiver, filter)
         }
     }
 
@@ -151,37 +162,29 @@ class MainActivity : Activity() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                if (!request.isForMainFrame) {
-                    return false
-                }
-
+                if (!request.isForMainFrame) return false
                 val uri = request.url ?: return false
                 val urlStr = uri.toString()
 
-                // Local bundled assets stay in webview
                 if (urlStr.startsWith(ASSET_INDEX) || urlStr.startsWith("file:///android_asset/")) {
                     return false
                 }
-
-                // If user is connected to their custom VPS backend web interface, keep browsing it
                 val customServer = prefs.getString(KEY_SERVER, "")
                 if (!customServer.isNullOrBlank() && urlStr.startsWith(customServer)) {
                     return false
                 }
-
-                // Handle YouTube embed iframes inside webview
                 if (urlStr.contains("youtube.com/embed/") || urlStr.contains("youtube-nocookie.com/embed/")) {
                     return false
                 }
+                if (urlStr.startsWith("blob:") || urlStr.startsWith("data:") || urlStr.startsWith("javascript:") || urlStr.startsWith("about:")) {
+                    return false
+                }
 
-                // All other external URLs (Razorpay, UPI, GitHub, external browsers) open externally
                 try {
                     if (urlStr.startsWith("intent://")) {
                         val intent = Intent.parseUri(urlStr, Intent.URI_INTENT_SCHEME)
                         if (intent != null) {
-                            val packageManager = packageManager
-                            val info = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                            if (info != null) {
+                            if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
                                 startActivity(intent)
                             } else {
                                 val fallbackUrl = intent.getStringExtra("browser_fallback_url")
@@ -192,17 +195,10 @@ class MainActivity : Activity() {
                             return true
                         }
                     }
-
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivity(intent)
                 } catch (e: Exception) {
-                    try {
-                        // Fallback open via browser
-                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlStr))
-                        startActivity(browserIntent)
-                    } catch (_: Exception) {
-                        toast("Cannot open external link: " + (e.message ?: ""))
-                    }
+                    toast("Cannot open link: ${e.message}")
                 }
                 return true
             }
@@ -220,7 +216,6 @@ class MainActivity : Activity() {
                 view: WebView?, request: WebResourceRequest?, error: android.webkit.WebResourceError?
             ) {
                 if (request?.isForMainFrame == true && error?.errorCode != WebViewClient.ERROR_HOST_LOOKUP) {
-                    // If custom server failed to load, fallback to bundled web UI
                     if (view?.url != ASSET_INDEX) {
                         view?.loadUrl(ASSET_INDEX)
                     }
@@ -266,7 +261,7 @@ class MainActivity : Activity() {
         }
 
         webView.setDownloadListener { url, userAgent, contentDisposition, _, _ ->
-            downloadFile(url, userAgent, contentDisposition)
+            downloadFile(url, null, contentDisposition, userAgent)
         }
 
         webView.addJavascriptInterface(JsBridge(), "AndroidDownloader")
@@ -275,9 +270,14 @@ class MainActivity : Activity() {
     inner class JsBridge {
         @JavascriptInterface
         fun downloadFile(url: String) {
+            downloadFileWithTitle(url, null, null)
+        }
+
+        @JavascriptInterface
+        fun downloadFileWithTitle(url: String, customTitle: String?, mimeType: String?) {
             runOnUiThread {
                 if (url.startsWith("http://") || url.startsWith("https://")) {
-                    this@MainActivity.downloadFile(url, null, null)
+                    this@MainActivity.downloadFile(url, customTitle, null, webView.settings.userAgentString)
                 } else {
                     toast("Invalid download link.")
                 }
@@ -337,11 +337,17 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun downloadFile(url: String, userAgent: String?, contentDisposition: String?) {
+    private fun downloadFile(url: String, customTitle: String?, contentDisposition: String?, userAgent: String?) {
         val safeUrl = url.trim()
         if (safeUrl.isEmpty()) return
 
-        val fileName = resolveFileName(safeUrl, contentDisposition)
+        val fileName = if (!customTitle.isNullOrBlank()) {
+            val extension = if (safeUrl.contains("audio", ignoreCase = true) || safeUrl.endsWith(".mp3")) ".mp3" else ".mp4"
+            sanitizeFileName(customTitle) + if (customTitle.endsWith(".mp4", ignoreCase = true) || customTitle.endsWith(".mp3", ignoreCase = true)) "" else extension
+        } else {
+            resolveFileName(safeUrl, contentDisposition)
+        }
+
         try {
             val dm = getSystemService(DownloadManager::class.java)
             val request = DownloadManager.Request(Uri.parse(safeUrl))
@@ -352,11 +358,12 @@ class MainActivity : Activity() {
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(true)
 
-            if (!userAgent.isNullOrBlank()) {
-                request.addRequestHeader("User-Agent", userAgent)
-            }
+            val ua = if (!userAgent.isNullOrBlank()) userAgent else webView.settings.userAgentString
+            request.addRequestHeader("User-Agent", ua)
+            request.addRequestHeader("Referer", "https://www.youtube.com/")
+
             dm.enqueue(request)
-            toast("Downloading to your Downloads folder…")
+            toast("Downloading \"$fileName\" to Downloads folder…")
         } catch (e: Exception) {
             toast("Download failed: ${e.message}")
         }
@@ -373,11 +380,11 @@ class MainActivity : Activity() {
                 return sanitizeFileName(decode(m.groupValues[1]))
             }
             URLUtil.guessFileName(url, contentDisposition, null)?.let {
-                if (it.isNotBlank()) return sanitizeFileName(it)
+                if (it.isNotBlank() && !it.endsWith(".bin")) return sanitizeFileName(it)
             }
         }
         val default = "video_" + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        return URLUtil.guessFileName(url, null, null)?.takeIf { it.isNotBlank() } ?: "$default.mp4"
+        return URLUtil.guessFileName(url, null, null)?.takeIf { it.isNotBlank() && !it.endsWith(".bin") } ?: "$default.mp4"
     }
 
     private fun sanitizeFileName(name: String): String {
